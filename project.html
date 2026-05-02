@@ -566,17 +566,19 @@
 
         // Section cards interaction
         
-        const sectionCards = document.querySelectorAll('.section-card');
+const sectionCards = document.querySelectorAll('.section-card');
 const contentArea = document.getElementById("contentArea");
 
 sectionCards.forEach(card => {
     card.addEventListener("click", function () {
 
+        // Highlight active card
         sectionCards.forEach(c => c.classList.remove("active"));
         this.classList.add("active");
 
         const sectionName = this.querySelector("h3").innerText;
 
+        // Load content based on click
         if (sectionName === "Aim") {
             contentArea.innerHTML = `
                 <h2>Aim</h2>
@@ -585,11 +587,67 @@ sectionCards.forEach(card => {
                 To compute Euler’s Totient Function φ(n).
                 </p>
             `;
-        } else {
-            contentArea.innerHTML = `<p>Click Aim to see content</p>`;
+        }
+
+        else if (sectionName === "Theory") {
+            contentArea.innerHTML = `
+                <h2>Theory</h2>
+                <p>
+                Euler’s theorem states that if gcd(a, n) = 1, then:
+                <br><br>
+                a<sup>φ(n)</sup> ≡ 1 (mod n)
+                </p>
+            `;
+        }
+
+        else if (sectionName === "Simulation") {
+            contentArea.innerHTML = `
+                <h2>Euler Calculator</h2>
+
+                <input id="a" placeholder="Enter a"><br><br>
+                <input id="n" placeholder="Enter n"><br><br>
+
+                <button onclick="calculateEuler()">Calculate</button>
+
+                <p id="result"></p>
+            `;
         }
     });
 });
+function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+}
+
+function phi(n) {
+    let count = 0;
+    for (let i = 1; i < n; i++) {
+        if (gcd(i, n) === 1) count++;
+    }
+    return count;
+}
+
+function calculateEuler() {
+    let a = parseInt(document.getElementById("a").value);
+    let n = parseInt(document.getElementById("n").value);
+
+    if (gcd(a, n) !== 1) {
+        document.getElementById("result").innerText =
+            "Euler theorem not applicable";
+        return;
+    }
+
+    let p = phi(n);
+    let res = 1;
+
+    for (let i = 0; i < p; i++) {
+        res = (res * a) % n;
+    }
+
+    document.getElementById("result").innerHTML =
+        `φ(${n}) = ${p} <br>
+         ${a}<sup>${p}</sup> mod ${n} = ${res} <br>
+         ✅ Verified`;
+}
 
         // Feedback button interaction
         const feedbackButton = document.querySelector('.feedback-button');
