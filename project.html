@@ -1046,332 +1046,757 @@ function updateScore(p){
   if(sc){sc.style.display='block';sc.innerHTML=`📊 Score: <strong>${score}/${total}</strong> (${Math.round(score/total*100)}%)`;}
   saveScore(p==='pre'?'pretest':'posttest',score,total);updateAllStatuses();
 }
-
 // ══════════ SIMULATION ══════════
+
 function simTab(t){
-  document.getElementById('sim-verify').style.display=t==='verify'?'block':'none';
-  document.getElementById('sim-partial').style.display=t==='partial'?'block':'none';
-  document.getElementById('sim-verify-btn').style.background=t==='verify'?'linear-gradient(to right,#3498db,#2c80b9)':'linear-gradient(to right,#7f8c8d,#555)';
-  document.getElementById('sim-partial-btn').style.background=t==='partial'?'linear-gradient(to right,#3498db,#2c80b9)':'linear-gradient(to right,#7f8c8d,#555)';
+  document.getElementById('sim-verify').style.display =
+    t==='verify' ? 'block' : 'none';
+
+  document.getElementById('sim-partial').style.display =
+    t==='partial' ? 'block' : 'none';
+
+  document.getElementById('sim-verify-btn').style.background =
+    t==='verify'
+      ? 'linear-gradient(to right,#3498db,#2c80b9)'
+      : 'linear-gradient(to right,#7f8c8d,#555)';
+
+  document.getElementById('sim-partial-btn').style.background =
+    t==='partial'
+      ? 'linear-gradient(to right,#3498db,#2c80b9)'
+      : 'linear-gradient(to right,#7f8c8d,#555)';
 }
+
 function setSimVars(n,m){
+
   if(m==='v'){
+
     simVarsV=n;
+
     document.getElementById('vv2').classList.toggle('active',n===2);
     document.getElementById('vv3').classList.toggle('active',n===3);
-    document.getElementById('v-zlabel').textContent=n===3?', z':'';
-    document.getElementById('vv3-examples').style.display=n===3?'flex':'none';
+
+    document.getElementById('v-zlabel').textContent =
+      n===3 ? ', z' : '';
+
+    document.getElementById('vv3-examples').style.display =
+      n===3 ? 'flex' : 'none';
+
   }else{
+
     simVarsP=n;
+
     document.getElementById('pv2').classList.toggle('active',n===2);
     document.getElementById('pv3').classList.toggle('active',n===3);
-    document.getElementById('p-zlabel').textContent=n===3?', z':'';
+
+    document.getElementById('p-zlabel').textContent =
+      n===3 ? ', z' : '';
+
     const p3ex=document.getElementById('p3-examples');
-    if(p3ex)p3ex.style.display=n===3?'flex':'none';
+
+    if(p3ex)
+      p3ex.style.display=n===3?'flex':'none';
   }
 }
+
 function loadSim(fn,deg,m){
-  if(m==='v'){document.getElementById('v-fn').value=fn;if(deg!=='')document.getElementById('v-deg').value=deg;}
-  else document.getElementById('p-fn').value=fn;
-}
-function fmt(n){if(!isFinite(n))return '<span style="color:#e74c3c">Err</span>';if(Math.abs(n)<1e-8)return '0';return parseFloat(n.toFixed(5)).toString();}
-function pp(e){return e.replace(/\^/g,'**').replace(/sqrt\(/g,'Math.sqrt(');}
-function showR(el,html,t){el.innerHTML=html;el.style.display='block';el.className='result-box '+t;}
-function ef2(e,x,y){try{return Function('x','y','return ('+pp(e)+');')(x,y);}catch(e){return NaN;}}
-function ef3(e,x,y,z){try{return Function('x','y','z','return ('+pp(e)+');')(x,y,z);}catch(e){return NaN;}}
-function ef(e,x,y,z,i3){return i3?ef3(e,x,y,z):ef2(e,x,y);}
-function nd(e,v,x,y,z,i3){const h=1e-6;if(v==='x')return(ef(e,x+h,y,z,i3)-ef(e,x-h,y,z,i3))/(2*h);if(v==='y')return(ef(e,x,y+h,z,i3)-ef(e,x,y-h,z,i3))/(2*h);return(ef(e,x,y,z+h,i3)-ef(e,x,y,z-h,i3))/(2*h);}
 
-function runVerify(){
-  const expr=document.getElementById('v-fn').value.trim();
-  const n=parseInt(document.getElementById('v-deg').value);
-  const out=document.getElementById('verify-result');
-  if(!expr){showR(out,'<div style="color:#e74c3c">Please enter a function.</div>','error');return;}
-  const is3=simVarsV===3;
-  const pts=[[2,3,5],[1,4,2],[3,2,6]];
-  let isHom=true;
-  for(const[x,y,z]of pts){const t=2.5;const lhs=ef(expr,t*x,t*y,t*z,is3);const rhs=Math.pow(t,n)*ef(expr,x,y,z,is3);if(!isFinite(lhs)||!isFinite(rhs)||Math.abs(lhs-rhs)>1e-3*(Math.abs(rhs)+1)){isHom=false;break;}}
-  let h=`<div class="step-item"><div class="step-label">Given</div><div class="step-val">f(${is3?'x,y,z':'x,y'})=<code>${expr}</code> | n=<strong>${n}</strong></div></div>`;
-  h+=`<div class="step-item"><div class="step-label">Homogeneity check</div><div class="step-val">`;
-  for(const pt of pts.slice(0,2)){const[x,y,z]=pt;const t=2;const lhs=ef(expr,t*x,t*y,t*z,is3);const rhs=Math.pow(t,n)*ef(expr,x,y,z,is3);const ok=isFinite(lhs)&&isFinite(rhs)&&Math.abs(lhs-rhs)<1e-3*(Math.abs(rhs)+1);h+=`(${is3?pt.join(','):[x,y].join(',')}) → f(t·x,…)=${fmt(lhs)}, t<sup>${n}</sup>·f=${fmt(rhs)} <span class="${ok?'badge-ok':'badge-fail'}">${ok?'✓':'✗'}</span><br>`;}
-  h+=`<br><strong>${isHom?'✓ Homogeneous of degree '+n:'✗ Not homogeneous of degree '+n}</strong></div></div>`;
-  if(!isHom){h+=`<div class="step-item"><div class="step-label">Conclusion</div><div class="step-val"><span class="badge-fail">Theorem does not apply</span></div></div>`;showR(out,h,'error');return;}
-  const x=2,y=3,z=5;
-  const fx=nd(expr,'x',x,y,z,is3),fy=nd(expr,'y',x,y,z,is3),fz=is3?nd(expr,'z',x,y,z,is3):0;
-  const fval=ef(expr,x,y,z,is3),es=x*fx+y*fy+(is3?z*fz:0),nf=n*fval;
-  const ok=isFinite(es)&&isFinite(nf)&&Math.abs(es-nf)<1e-3*(Math.abs(nf)+1);
-  h+=`<div class="step-item"><div class="step-label">Partials at (${is3?`${x},${y},${z}`:`${x},${y}`})</div><div class="step-val">∂f/∂x=<code>${fmt(fx)}</code> | ∂f/∂y=<code>${fmt(fy)}</code>${is3?` | ∂f/∂z=<code>${fmt(fz)}</code>`:''}</div></div>`;
-  h+=`<div class="step-item"><div class="step-label">Euler sum</div><div class="step-val">x·fx+y·fy${is3?'+z·fz':''}=<strong>${fmt(es)}</strong> &nbsp;|&nbsp; n·f=<strong>${fmt(nf)}</strong></div></div>`;
-  h+=`<div class="step-item"><div class="step-label">Result</div><div class="step-val"><span class="${ok?'badge-ok':'badge-fail'}">${ok?"✓ Euler's Theorem Verified":"✗ Values don't match"}</span></div></div>`;
-  showR(out,h,ok?'success':'error');
+  if(m==='v'){
+
+    document.getElementById('v-fn').value=fn;
+
+    if(deg!=='')
+      document.getElementById('v-deg').value=deg;
+
+  }else{
+
+    document.getElementById('p-fn').value=fn;
+  }
+}
+
+function showR(el,html,t){
+  el.innerHTML=html;
+  el.style.display='block';
+  el.className='result-box '+t;
 }
 
 // ══════════════════════════════════════════════════════════
-// SYMBOLIC PARTIAL DERIVATIVES ENGINE
-// Parses polynomial expressions and returns exact symbolic results
+// SYMBOLIC POLYNOMIAL ENGINE
 // ══════════════════════════════════════════════════════════
 
-/**
- * Parse a polynomial expression string into a list of terms.
- * Each term: { coeff: number, powers: {x:n, y:n, z:n} }
- */
-function parsePolynomial(expr) {
-  // Normalise: remove spaces, replace ** with ^
-  let s = expr.replace(/\s+/g,'').replace(/\*\*/g,'^');
+function parsePolynomial(expr){
 
-  // Insert explicit * between coeff and variable: 3x → 3*x, 2xy → 2*x*y, etc.
+  let s = expr
+    .replace(/\s+/g,'')
+    .replace(/\*\*/g,'^');
+
+  // Insert explicit multiplication
   s = s.replace(/([0-9])([a-z])/g,'$1*$2');
   s = s.replace(/([a-z])([a-z])/g,'$1*$2');
   s = s.replace(/([a-z])\^([0-9]+)([a-z])/g,'$1^$2*$3');
 
-  // Tokenise into terms (split on + / - keeping sign)
-  // Add a leading + so every term has a sign prefix
-  s = s.replace(/^-/,'NEG').replace(/\+-/,'+-');
+  // Split terms
+  s = s.replace(/^-/,'NEG');
+
   let rawTerms = s.split(/(?=[+-])/);
-  // Restore the leading negative
-  rawTerms = rawTerms.map(t=>t.replace(/^NEG/,'-'));
+
+  rawTerms = rawTerms.map(t =>
+    t.replace(/^NEG/,'-')
+  );
 
   const terms = [];
-  for (let raw of rawTerms) {
+
+  for(let raw of rawTerms){
+
     raw = raw.trim();
-    if (!raw) continue;
-    // Determine sign
+
+    if(!raw) continue;
+
     let sign = 1;
-    if (raw.startsWith('-')) { sign = -1; raw = raw.slice(1); }
-    else if (raw.startsWith('+')) { raw = raw.slice(1); }
 
-    // Split by * to get factors
+    if(raw.startsWith('-')){
+      sign = -1;
+      raw = raw.slice(1);
+    }
+    else if(raw.startsWith('+')){
+      raw = raw.slice(1);
+    }
+
     const factors = raw.split('*');
-    let coeff = sign;
-    const powers = {x:0, y:0, z:0};
 
-    for (let f of factors) {
+    let coeff = sign;
+
+    const powers = {
+      x:0,
+      y:0,
+      z:0
+    };
+
+    for(let f of factors){
+
       f = f.trim();
-      if (!f) continue;
-      // Is it a pure number?
-      if (/^[0-9.]+$/.test(f)) {
+
+      if(!f) continue;
+
+      // number
+      if(/^[0-9.]+$/.test(f)){
+
         coeff *= parseFloat(f);
-      } else {
-        // variable^power or just variable
+
+      }else{
+
+        // x^2
         const m = f.match(/^([xyz])\^([0-9]+)$/);
-        if (m) {
+
+        if(m){
+
           powers[m[1]] += parseInt(m[2]);
-        } else if (/^[xyz]$/.test(f)) {
+
+        }else if(/^[xyz]$/.test(f)){
+
           powers[f] += 1;
-        } else {
-          // unrecognised factor — return null to signal failure
+
+        }else{
+
           return null;
         }
       }
     }
-    terms.push({ coeff, powers });
+
+    terms.push({
+      coeff,
+      powers
+    });
   }
+
   return terms;
 }
 
-/**
- * Differentiate a list of terms with respect to variable v.
- * Returns new list of terms.
- */
-function diffTerms(terms, v) {
-  const result = [];
-  for (const {coeff, powers} of terms) {
+// ══════════════════════════════════════════════════════════
+// DIFFERENTIATION
+// ══════════════════════════════════════════════════════════
+
+function diffTerms(terms,v){
+
+  const result=[];
+
+  for(const {coeff,powers} of terms){
+
     const p = powers[v];
-    if (p === 0) continue; // constant in v → disappears
-    const newCoeff = coeff * p;
+
+    if(p===0) continue;
+
+    const newCoeff = coeff*p;
+
     const newPowers = {...powers};
-    newPowers[v] = p - 1;
-    result.push({ coeff: newCoeff, powers: newPowers });
+
+    newPowers[v] = p-1;
+
+    result.push({
+      coeff:newCoeff,
+      powers:newPowers
+    });
   }
+
   return result;
 }
 
-/**
- * Render a list of terms as a readable string.
- */
-function renderTerms(terms) {
-  if (terms.length === 0) return '0';
-  let out = '';
-  for (let i = 0; i < terms.length; i++) {
-    const {coeff, powers} = terms[i];
-    if (coeff === 0) continue;
+// ══════════════════════════════════════════════════════════
+// RENDER TERMS
+// ══════════════════════════════════════════════════════════
 
-    // Sign
+function renderTerms(terms){
+
+  if(terms.length===0)
+    return '0';
+
+  let out='';
+
+  for(let i=0;i<terms.length;i++){
+
+    const {coeff,powers} = terms[i];
+
+    if(coeff===0) continue;
+
     let absC = Math.abs(coeff);
-    if (i === 0) {
-      out += coeff < 0 ? '−' : '';
-    } else {
-      out += coeff < 0 ? ' − ' : ' + ';
+
+    // sign
+    if(i===0){
+
+      out += coeff<0 ? '−' : '';
+
+    }else{
+
+      out += coeff<0 ? ' − ' : ' + ';
     }
 
-    // Coefficient (omit 1 if there are variables, keep for pure constant)
-    const varStr = ['x','y','z'].filter(v=>powers[v]>0)
-      .map(v=> powers[v]===1 ? v : v+'<sup>'+powers[v]+'</sup>').join('');
-    if (absC !== 1 || varStr === '') {
-      // Format nicely: integer vs decimal
-      const cStr = Number.isInteger(absC) ? absC.toString() : absC.toFixed(4);
-      out += cStr;
+    const varStr = ['x','y','z']
+      .filter(v=>powers[v]>0)
+      .map(v =>
+        powers[v]===1
+          ? v
+          : v+'<sup>'+powers[v]+'</sup>'
+      )
+      .join('');
+
+    // coefficient
+    if(absC!==1 || varStr===''){
+
+      out += Number.isInteger(absC)
+        ? absC.toString()
+        : absC.toFixed(4);
     }
+
     out += varStr;
   }
+
   return out || '0';
 }
 
-/**
- * Detect degree of homogeneity from parsed terms.
- */
-function detectDegree(terms) {
-  if (!terms || terms.length === 0) return null;
-  const degrees = terms.filter(t=>t.coeff!==0).map(t=>t.powers.x+t.powers.y+t.powers.z);
-  if (degrees.length === 0) return 0;
+// ══════════════════════════════════════════════════════════
+// DEGREE DETECTION
+// ══════════════════════════════════════════════════════════
+
+function detectDegree(terms){
+
+  if(!terms || terms.length===0)
+    return null;
+
+  const degrees = terms
+    .filter(t=>t.coeff!==0)
+    .map(t =>
+      t.powers.x +
+      t.powers.y +
+      t.powers.z
+    );
+
+  if(degrees.length===0)
+    return 0;
+
   const d0 = degrees[0];
-  return degrees.every(d=>d===d0) ? d0 : null;
+
+  return degrees.every(d=>d===d0)
+    ? d0
+    : null;
 }
 
-/**
- * Build Euler's symbolic sum: x·∂f/∂x + y·∂f/∂y [+ z·∂f/∂z]
- * Should equal n·f for homogeneous functions.
- */
-function buildEulerSum(terms, is3) {
-  // Multiply each differentiated term list by the corresponding variable
-  const multiplyVar = (dTerms, v) => dTerms.map(t=>{
-    const newPow = {...t.powers};
-    newPow[v] += 1;
-    return {coeff: t.coeff, powers: newPow};
-  });
-  const dxTerms = multiplyVar(diffTerms(terms,'x'),'x');
-  const dyTerms = multiplyVar(diffTerms(terms,'y'),'y');
-  let combined = [...dxTerms, ...dyTerms];
-  if (is3) {
-    const dzTerms = multiplyVar(diffTerms(terms,'z'),'z');
-    combined = [...combined, ...dzTerms];
+// ══════════════════════════════════════════════════════════
+// COLLECT LIKE TERMS
+// ══════════════════════════════════════════════════════════
+
+function collectTerms(terms){
+
+  const map = {};
+
+  for(const {coeff,powers} of terms){
+
+    const key =
+      `${powers.x},${powers.y},${powers.z}`;
+
+    if(map[key]){
+
+      map[key].coeff += coeff;
+
+    }else{
+
+      map[key] = {
+        coeff,
+        powers:{...powers}
+      };
+    }
   }
-  // Collect like terms
+
+  return Object.values(map)
+    .filter(t=>Math.abs(t.coeff)>1e-10);
+}
+
+// ══════════════════════════════════════════════════════════
+// BUILD EULER SUM
+// ══════════════════════════════════════════════════════════
+
+function buildEulerSum(terms,is3){
+
+  const multiplyVar = (dTerms,v) =>
+    dTerms.map(t=>{
+
+      const newPow = {...t.powers};
+
+      newPow[v] += 1;
+
+      return {
+        coeff:t.coeff,
+        powers:newPow
+      };
+    });
+
+  const dxTerms =
+    multiplyVar(diffTerms(terms,'x'),'x');
+
+  const dyTerms =
+    multiplyVar(diffTerms(terms,'y'),'y');
+
+  let combined = [
+    ...dxTerms,
+    ...dyTerms
+  ];
+
+  if(is3){
+
+    const dzTerms =
+      multiplyVar(diffTerms(terms,'z'),'z');
+
+    combined = [
+      ...combined,
+      ...dzTerms
+    ];
+  }
+
   return collectTerms(combined);
 }
 
-function collectTerms(terms) {
-  const map = {};
-  for (const {coeff, powers} of terms) {
-    const key = `${powers.x},${powers.y},${powers.z}`;
-    if (map[key]) map[key].coeff += coeff;
-    else map[key] = {coeff, powers:{...powers}};
-  }
-  return Object.values(map).filter(t=>Math.abs(t.coeff)>1e-10);
+// ══════════════════════════════════════════════════════════
+// VERIFY SYMBOLIC MATCH
+// ══════════════════════════════════════════════════════════
+
+function verifySymbolicMatch(a,b){
+
+  return (
+    renderTerms(collectTerms(a)) ===
+    renderTerms(collectTerms(b))
+  );
 }
 
-function runPartial(){
-  const expr = document.getElementById('p-fn').value.trim();
-  const out = document.getElementById('partial-result');
-  if(!expr){showR(out,'<div style="color:#e74c3c">Please enter a function.</div>','error');return;}
+// ══════════════════════════════════════════════════════════
+// VERIFY TAB
+// SYMBOLIC ONLY
+// ══════════════════════════════════════════════════════════
 
-  const is3 = simVarsP === 3;
-  const terms = parsePolynomial(expr);
+function runVerify(){
 
-  if (!terms || terms.length === 0) {
-    showR(out,`
-      <div class="step-item">
-        <div class="step-label">⚠ Parse Error</div>
-        <div class="step-val" style="color:#c0392b;">
-          Could not parse the expression symbolically.<br>
-          <strong>Supported forms:</strong> polynomial terms only, e.g.<br>
-          <code>x^3 + 3*x*y^2</code>, <code>x^2*y + y^3</code>, <code>2*x^2 + x*y + y^2</code><br>
-          Avoid: sqrt(), sin(), cos(), ln() — use the <em>Verify</em> tab for those.
-        </div>
-      </div>`,'error');
+  const expr =
+    document.getElementById('v-fn')
+    .value
+    .trim();
+
+  const n =
+    parseInt(
+      document.getElementById('v-deg').value
+    );
+
+  const out =
+    document.getElementById('verify-result');
+
+  if(!expr){
+
+    showR(
+      out,
+      '<div style="color:#e74c3c">Please enter a function.</div>',
+      'error'
+    );
+
     return;
   }
 
-  const dxTerms = diffTerms(terms, 'x');
-  const dyTerms = diffTerms(terms, 'y');
-  const dzTerms = is3 ? diffTerms(terms, 'z') : [];
+  const is3 = simVarsV===3;
 
-  const degree = detectDegree(terms);
-  const eulerSum = buildEulerSum(terms, is3);
-  const nf = degree !== null ? terms.map(t=>({coeff:t.coeff*degree, powers:t.powers})) : null;
+  const terms = parsePolynomial(expr);
 
-  const vars = is3 ? 'x, y, z' : 'x, y';
-  let h = '';
+  if(!terms){
 
-  // Given function
-  h += `<div class="step-item">
-    <div class="step-label">Given Function</div>
-    <div class="step-val">f(${vars}) = <strong>${renderTerms(terms)}</strong></div>
-  </div>`;
-
-  // Degree
-  h += `<div class="step-item">
-    <div class="step-label">Degree of Homogeneity</div>
-    <div class="step-val">
-      ${degree !== null
-        ? `<span class="badge-info">n = ${degree}</span> &nbsp; (all terms have degree ${degree})`
-        : `<span class="badge-fail">Not homogeneous</span> — terms have different degrees`}
-    </div>
-  </div>`;
-
-  // ∂f/∂x
-  h += `<div class="step-item">
-    <div class="step-label">∂f / ∂x</div>
-    <div class="step-val" style="font-family:'Courier New',monospace;font-size:15px;color:#2c3e50;">
-      ${renderTerms(dxTerms)}
-    </div>
-  </div>`;
-
-  // ∂f/∂y
-  h += `<div class="step-item">
-    <div class="step-label">∂f / ∂y</div>
-    <div class="step-val" style="font-family:'Courier New',monospace;font-size:15px;color:#2c3e50;">
-      ${renderTerms(dyTerms)}
-    </div>
-  </div>`;
-
-  // ∂f/∂z if 3-var
-  if (is3) {
-    h += `<div class="step-item">
-      <div class="step-label">∂f / ∂z</div>
-      <div class="step-val" style="font-family:'Courier New',monospace;font-size:15px;color:#2c3e50;">
-        ${renderTerms(dzTerms)}
+    showR(out,`
+      <div class="step-item">
+        <div class="step-label">Parse Error</div>
+        <div class="step-val">
+          Only polynomial expressions are supported.
+        </div>
       </div>
-    </div>`;
+    `,'error');
+
+    return;
   }
 
-  // Euler's theorem verification (symbolic)
-  if (degree !== null) {
-    const eulerStr = renderTerms(eulerSum);
-    const nfStr = renderTerms(nf);
-    // Check symbolically by comparing string or numerically
-    const eulerMatch = renderTerms(collectTerms(eulerSum)) === renderTerms(collectTerms(nf)) ||
-      verifySymbolicMatch(eulerSum, nf);
+  const detectedDegree =
+    detectDegree(terms);
 
-    h += `<div class="step-item">
-      <div class="step-label">Euler's Theorem Check</div>
+  const isHomogeneous =
+    detectedDegree===n;
+
+  let h='';
+
+  // GIVEN
+  h += `
+    <div class="step-item">
+      <div class="step-label">Given Function</div>
       <div class="step-val">
-        <div style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:10px 14px;margin-bottom:8px;">
-          <div style="font-size:12px;color:#7f8c8d;margin-bottom:4px;">x·(∂f/∂x) + y·(∂f/∂y)${is3?'  + z·(∂f/∂z)':''} =</div>
-          <div style="font-family:'Courier New',monospace;font-size:15px;color:#155724;font-weight:600;">${eulerStr}</div>
-        </div>
-        <div style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:10px 14px;">
-          <div style="font-size:12px;color:#7f8c8d;margin-bottom:4px;">n · f(${vars}) = ${degree} × f =</div>
-          <div style="font-family:'Courier New',monospace;font-size:15px;color:#155724;font-weight:600;">${nfStr}</div>
-        </div>
-        <div style="margin-top:10px;">
-          <span class="${eulerMatch?'badge-ok':'badge-fail'}">${eulerMatch?"✓ Euler's Theorem Verified Symbolically":"⚠ Check expressions above"}</span>
-        </div>
+        f(${is3?'x,y,z':'x,y'}) =
+        <strong>${renderTerms(terms)}</strong>
       </div>
-    </div>`;
+    </div>
+  `;
+
+  // HOMOGENEITY
+  h += `
+    <div class="step-item">
+      <div class="step-label">
+        Homogeneity Check
+      </div>
+
+      <div class="step-val">
+
+        ${
+          isHomogeneous
+          ? `
+            <span class="badge-ok">
+              ✓ Homogeneous of degree ${n}
+            </span>
+          `
+          : `
+            <span class="badge-fail">
+              ✗ Not homogeneous of degree ${n}
+            </span>
+          `
+        }
+
+      </div>
+    </div>
+  `;
+
+  if(!isHomogeneous){
+
+    showR(out,h,'error');
+
+    return;
   }
 
-  showR(out, h, 'info');
+  // PARTIALS
+  const dxTerms =
+    diffTerms(terms,'x');
+
+  const dyTerms =
+    diffTerms(terms,'y');
+
+  const dzTerms =
+    is3
+      ? diffTerms(terms,'z')
+      : [];
+
+  h += `
+    <div class="step-item">
+      <div class="step-label">∂f / ∂x</div>
+
+      <div class="step-val"
+        style="font-family:'Courier New',monospace;">
+
+        ${renderTerms(dxTerms)}
+
+      </div>
+    </div>
+  `;
+
+  h += `
+    <div class="step-item">
+      <div class="step-label">∂f / ∂y</div>
+
+      <div class="step-val"
+        style="font-family:'Courier New',monospace;">
+
+        ${renderTerms(dyTerms)}
+
+      </div>
+    </div>
+  `;
+
+  if(is3){
+
+    h += `
+      <div class="step-item">
+        <div class="step-label">∂f / ∂z</div>
+
+        <div class="step-val"
+          style="font-family:'Courier New',monospace;">
+
+          ${renderTerms(dzTerms)}
+
+        </div>
+      </div>
+    `;
+  }
+
+  // EULER SUM
+  const eulerSum =
+    buildEulerSum(terms,is3);
+
+  const nfTerms =
+    terms.map(t=>({
+
+      coeff:t.coeff*n,
+
+      powers:{...t.powers}
+
+    }));
+
+  const eulerStr =
+    renderTerms(eulerSum);
+
+  const nfStr =
+    renderTerms(nfTerms);
+
+  const verified =
+    verifySymbolicMatch(
+      eulerSum,
+      nfTerms
+    );
+
+  h += `
+    <div class="step-item">
+
+      <div class="step-label">
+        Euler's Theorem
+      </div>
+
+      <div class="step-val">
+
+        <div style="
+          background:#f0fff4;
+          border:1px solid #b2dfdb;
+          border-radius:6px;
+          padding:12px;
+          margin-bottom:12px;
+        ">
+
+          <div style="
+            font-size:13px;
+            color:#7f8c8d;
+            margin-bottom:5px;
+          ">
+
+            x·(∂f/∂x)
+            + y·(∂f/∂y)
+            ${is3?'+ z·(∂f/∂z)':''}
+
+          </div>
+
+          <div style="
+            font-family:'Courier New',monospace;
+            font-size:16px;
+            color:#155724;
+            font-weight:600;
+          ">
+
+            ${eulerStr}
+
+          </div>
+        </div>
+
+        <div style="
+          background:#f0fff4;
+          border:1px solid #b2dfdb;
+          border-radius:6px;
+          padding:12px;
+        ">
+
+          <div style="
+            font-size:13px;
+            color:#7f8c8d;
+            margin-bottom:5px;
+          ">
+
+            n · f(${is3?'x,y,z':'x,y'})
+
+          </div>
+
+          <div style="
+            font-family:'Courier New',monospace;
+            font-size:16px;
+            color:#155724;
+            font-weight:600;
+          ">
+
+            ${nfStr}
+
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+
+          <span class="${
+            verified
+              ? 'badge-ok'
+              : 'badge-fail'
+          }">
+
+            ${
+              verified
+                ? "✓ Euler's Theorem Verified Symbolically"
+                : "✗ Expressions do not match"
+            }
+
+          </span>
+
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  showR(
+    out,
+    h,
+    verified ? 'success' : 'error'
+  );
 }
 
-/** Numerically verify two term-lists are equal by sampling */
-function verifySymbolicMatch(termsA, termsB) {
-  const pts = [[2,3,5],[1,4,2],[3,7,1]];
-  for (const [x,y,z] of pts) {
-    const evalTerms = (ts) => ts.reduce((s,t)=>s+t.coeff*Math.pow(x,t.powers.x)*Math.pow(y,t.powers.y)*Math.pow(z,t.powers.z),0);
-    if (Math.abs(evalTerms(termsA)-evalTerms(termsB)) > 1e-6) return false;
+// ══════════════════════════════════════════════════════════
+// PARTIAL DERIVATIVES TAB
+// ══════════════════════════════════════════════════════════
+
+function runPartial(){
+
+  const expr =
+    document.getElementById('p-fn')
+    .value
+    .trim();
+
+  const out =
+    document.getElementById('partial-result');
+
+  if(!expr){
+
+    showR(
+      out,
+      '<div style="color:#e74c3c">Please enter a function.</div>',
+      'error'
+    );
+
+    return;
   }
-  return true;
+
+  const is3 = simVarsP===3;
+
+  const terms =
+    parsePolynomial(expr);
+
+  if(!terms){
+
+    showR(out,`
+      <div class="step-item">
+        <div class="step-label">
+          Parse Error
+        </div>
+
+        <div class="step-val">
+          Only polynomial expressions are supported.
+        </div>
+      </div>
+    `,'error');
+
+    return;
+  }
+
+  const dxTerms =
+    diffTerms(terms,'x');
+
+  const dyTerms =
+    diffTerms(terms,'y');
+
+  const dzTerms =
+    is3
+      ? diffTerms(terms,'z')
+      : [];
+
+  let h='';
+
+  h += `
+    <div class="step-item">
+      <div class="step-label">
+        Given Function
+      </div>
+
+      <div class="step-val">
+        ${renderTerms(terms)}
+      </div>
+    </div>
+  `;
+
+  h += `
+    <div class="step-item">
+      <div class="step-label">
+        ∂f / ∂x
+      </div>
+
+      <div class="step-val">
+        ${renderTerms(dxTerms)}
+      </div>
+    </div>
+  `;
+
+  h += `
+    <div class="step-item">
+      <div class="step-label">
+        ∂f / ∂y
+      </div>
+
+      <div class="step-val">
+        ${renderTerms(dyTerms)}
+      </div>
+    </div>
+  `;
+
+  if(is3){
+
+    h += `
+      <div class="step-item">
+        <div class="step-label">
+          ∂f / ∂z
+        </div>
+
+        <div class="step-val">
+          ${renderTerms(dzTerms)}
+        </div>
+      </div>
+    `;
+  }
+
+  showR(out,h,'info');
 }
 
 // ══════════ FEEDBACK STARS ══════════
