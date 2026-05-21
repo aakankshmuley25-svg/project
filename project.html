@@ -76,7 +76,7 @@ header{background:linear-gradient(135deg,#2c3e50,#1a2530);color:white;padding:15
 .modal-body{padding:26px;}
 
 /* ── AUTH MODAL ── */
-.auth-modal-box{background:white;border-radius:14px;width:100%;max-width:420px;
+.auth-modal-box{background:white;border-radius:14px;width:100%;max-width:440px;
   box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:modalIn 0.3s ease;margin:auto;}
 .auth-tabs{display:flex;gap:4px;background:#f0f4f8;border-radius:8px;padding:4px;margin-bottom:22px;}
 .auth-tab{flex:1;padding:9px;text-align:center;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;color:#7f8c8d;transition:all 0.2s;}
@@ -85,13 +85,32 @@ header{background:linear-gradient(135deg,#2c3e50,#1a2530);color:white;padding:15
 .auth-form.active{display:block;}
 .form-field{margin-bottom:15px;}
 .form-field label{display:block;font-size:13px;font-weight:600;color:#555;margin-bottom:5px;}
-.form-field input{width:100%;padding:10px 14px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;transition:border 0.2s;outline:none;}
-.form-field input:focus{border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,0.1);}
+.pw-wrap{position:relative;}
+.pw-wrap input{width:100%;padding:10px 40px 10px 14px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;transition:border 0.2s;outline:none;}
+.pw-wrap input:focus{border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,0.1);}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#7f8c8d;font-size:16px;user-select:none;background:none;border:none;padding:0;line-height:1;}
+.pw-toggle:hover{color:#2c3e50;}
+.form-field input:not(.pw-wrap input){width:100%;padding:10px 14px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;transition:border 0.2s;outline:none;}
+.form-field input:not(.pw-wrap input):focus{border-color:#3498db;box-shadow:0 0 0 3px rgba(52,152,219,0.1);}
 .form-error{color:#e74c3c;font-size:12px;margin-top:4px;display:none;}
-.auth-submit{width:100%;padding:11px;background:linear-gradient(to right,#3498db,#2c80b9);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;}
+
+/* Auth Alert Banner */
+.auth-alert{display:none;background:#fff0f0;border:1.5px solid #e74c3c;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#c0392b;align-items:flex-start;gap:10px;}
+.auth-alert.show{display:flex;}
+.auth-alert.warn{background:#fff8e1;border-color:#f39c12;color:#856404;}
+.auth-alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+/* Success alert */
+.auth-alert.success-alert{background:#e8f8ee;border-color:#27ae60;color:#155724;}
+
+.auth-submit{width:100%;padding:11px;background:linear-gradient(to right,#3498db,#2c80b9);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;transition:all 0.2s;}
 .auth-submit:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(52,152,219,0.3);}
+.auth-submit:disabled{background:#b0c4d8;cursor:not-allowed;transform:none;box-shadow:none;}
 .auth-switch{text-align:center;margin-top:14px;font-size:13px;color:#7f8c8d;}
 .auth-switch a{color:#3498db;cursor:pointer;font-weight:600;}
+
+/* Session badge */
+.session-info{font-size:11px;color:#aaa;text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid #eee;}
 
 /* ── DASHBOARD ── */
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
@@ -216,14 +235,11 @@ header{background:linear-gradient(135deg,#2c3e50,#1a2530);color:white;padding:15
 .examples-row span{font-size:12px;color:#7f8c8d;align-self:center;}
 .ex-btn{font-size:11px;padding:4px 10px;border:1px solid #ddd;border-radius:20px;background:white;color:#555;cursor:pointer;font-family:'Courier New',monospace;transition:all 0.2s;}
 .ex-btn:hover{background:#e8f4fc;border-color:#3498db;color:#2c80b9;}
-
-/* Symbolic result table */
 .sym-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px;}
 .sym-table th{background:#2c3e50;color:white;padding:8px 12px;text-align:left;font-size:12px;}
 .sym-table td{padding:9px 12px;border-bottom:1px solid #e0e7ef;color:#2c3e50;font-family:'Courier New',monospace;}
 .sym-table tr:nth-child(even) td{background:#f0f7ff;}
 .sym-table .sym-label{font-family:'Segoe UI',sans-serif;font-weight:600;color:#555;font-size:12px;}
-
 .ref-list{list-style:none;}
 .ref-list li{padding:14px 16px;border-bottom:1px solid #eee;display:flex;align-items:flex-start;gap:14px;}
 .ref-list li:last-child{border-bottom:none;}
@@ -247,10 +263,13 @@ header{background:linear-gradient(135deg,#2c3e50,#1a2530);color:white;padding:15
 .fb-submit:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(52,152,219,0.3);}
 .fb-success{display:none;background:#d4edda;color:#155724;padding:14px 18px;border-radius:8px;margin-top:14px;font-weight:500;}
 
-/* ── DUPLICATE ACCOUNT ALERT ── */
-.auth-alert{display:none;background:#fff0f0;border:1.5px solid #e74c3c;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#c0392b;display:none;align-items:flex-start;gap:10px;}
-.auth-alert.show{display:flex;}
-.auth-alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+/* ── PASSWORD STRENGTH ── */
+.pw-strength{margin-top:5px;height:4px;border-radius:2px;background:#eee;overflow:hidden;}
+.pw-strength-fill{height:100%;width:0%;border-radius:2px;transition:all 0.3s;}
+.pw-strength-fill.weak{background:#e74c3c;width:33%;}
+.pw-strength-fill.medium{background:#f39c12;width:66%;}
+.pw-strength-fill.strong{background:#27ae60;width:100%;}
+.pw-strength-label{font-size:11px;margin-top:3px;color:#7f8c8d;}
 
 footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:13px;border-top:1px solid #eee;}
 .footer-logo{font-weight:bold;color:#2c3e50;}
@@ -298,42 +317,42 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
   </div>
   <div class="cards-grid">
     <div class="home-card" onclick="openSection('aim')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-400a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm0 64a80 80 0 1 0 0 160A80 80 0 1 0 256 176zm0 48a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-400a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm0 64a80 80 0 1 0 0 160A80 80 0 1 0 256 176zm0 48a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg></span></div>
       <h3>Aim</h3><p>Objective of the experiment</p>
       <span class="card-status status-not" id="st-aim">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('theory')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg></span></div>
       <h3>Theory</h3><p>Background concepts &amp; formulas</p>
       <span class="card-status status-not" id="st-theory">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('pretest')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1 0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1 0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1 0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1 0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg></span></div>
       <h3>Pretest</h3><p>Pre-experiment assessment</p>
       <span class="card-status status-not" id="st-pretest">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('simulation')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64H240l-10.7 32H160c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H346.7L336 416H512c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64zM512 64V352H64V64H512z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="white"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64H240l-10.7 32H160c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H346.7L336 416H512c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64zM512 64V352H64V64H512z"/></svg></span></div>
       <h3>Simulation</h3><p>Interactive theorem verifier</p>
       <span class="card-status status-not" id="st-simulation">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('posttest')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM305 273L177 401c-9.4 9.4-24.6 9.4-33.9 0L79 337c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="white"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM305 273L177 401c-9.4 9.4-24.6 9.4-33.9 0L79 337c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L271 239c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg></span></div>
       <h3>Posttest</h3><p>Post-experiment assessment</p>
       <span class="card-status status-not" id="st-posttest">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('references')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor"><path d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5V78.6c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8V454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5V83.8c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 45.6c-3.3 2.6-5 6.8-5 11V456c0 11.4 11.7 19.3 22.4 15.5z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="white"><path d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5V78.6c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8V454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5V83.8c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 45.6c-3.3 2.6-5 6.8-5 11V456c0 11.4 11.7 19.3 22.4 15.5z"/></svg></span></div>
       <h3>References</h3><p>Further reading</p>
       <span class="card-status status-not" id="st-references">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('contributors')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor"><path d="M144 160A80 80 0 1 0 144 0a80 80 0 1 0 0 160zm368 0A80 80 0 1 0 512 0a80 80 0 1 0 0 160zM0 298.7C0 310.4 9.6 320 21.3 320H234.7c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7H106.7C47.8 192 0 239.8 0 298.7zM320 320c24 0 45.9-8.8 62.7-23.3c21.9-18.9 35.3-46.3 35.3-76.7c0-55.9-43.4-101.3-97.1-103.9c-1.9-.1-3.9-.1-5.8-.1C259.4 116 208 167.4 208 231.1C208 280.1 237.7 322.4 280 337.5C292.3 342.1 306 344 320 344c0 0 0 0 0-24zM405.3 320c-.2 0-.4 0-.7 0H405.3zM447.3 192H416c-15.9 0-31 3.4-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 38.2-16.8 72.5-43.3 96c.2 0 .4 0 .7 0H618.7c11.8 0 21.3-9.6 21.3-21.3C640 239.8 592.2 192 533.3 192H447.3zM255.4 337.5c-3.8-1.3-7.4-2.8-11-4.5C248.8 334.3 252 335.9 255.4 337.5zM224 480c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V416c0-53-43-96-96-96s-96 43-96 96v64z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="white"><path d="M144 160A80 80 0 1 0 144 0a80 80 0 1 0 0 160zm368 0A80 80 0 1 0 512 0a80 80 0 1 0 0 160zM0 298.7C0 310.4 9.6 320 21.3 320H234.7c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7H106.7C47.8 192 0 239.8 0 298.7zM320 320c24 0 45.9-8.8 62.7-23.3c21.9-18.9 35.3-46.3 35.3-76.7c0-55.9-43.4-101.3-97.1-103.9c-1.9-.1-3.9-.1-5.8-.1C259.4 116 208 167.4 208 231.1C208 280.1 237.7 322.4 280 337.5C292.3 342.1 306 344 320 344c0 0 0 0 0-24zM405.3 320c-.2 0-.4 0-.7 0H405.3zM447.3 192H416c-15.9 0-31 3.4-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 38.2-16.8 72.5-43.3 96c.2 0 .4 0 .7 0H618.7c11.8 0 21.3-9.6 21.3-21.3C640 239.8 592.2 192 533.3 192H447.3zM255.4 337.5c-3.8-1.3-7.4-2.8-11-4.5C248.8 334.3 252 335.9 255.4 337.5zM224 480c0 17.7 14.3 32 32 32H384c17.7 0 32-14.3 32-32V416c0-53-43-96-96-96s-96 43-96 96v64z"/></svg></span></div>
       <h3>Contributors</h3><p>Meet the team</p>
       <span class="card-status status-not" id="st-contributors">Not Started</span>
     </div>
     <div class="home-card" onclick="openSection('feedback')">
-      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4c0-6 .3-11.9 .8-17.8H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg></span></div>
+      <div class="card-icon"><span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4c0-6 .3-11.9 .8-17.8H64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg></span></div>
       <h3>Feedback</h3><p>Share your experience</p>
       <span class="card-status status-not" id="st-feedback">Not Started</span>
     </div>
@@ -346,7 +365,7 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
     <div class="modal-header">
       <h2 id="modalTitle">Section</h2>
       <button class="back-home-btn" onclick="closeSection()">
-        <span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;vertical-align:-0.125em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span> Back to Home
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:1em;height:1em;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span> Back to Home
       </button>
     </div>
     <div class="modal-body" id="modalBody"></div>
@@ -357,7 +376,7 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
 <div class="modal-overlay" id="authModal">
   <div class="auth-modal-box">
     <div class="modal-header">
-      <h2>Student Account</h2>
+      <h2>🎓 Student Account</h2>
       <button class="back-home-btn" onclick="closeAuth()" style="padding:6px 12px;">✕</button>
     </div>
     <div style="padding:22px;">
@@ -365,26 +384,75 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
         <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Sign In</div>
         <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</div>
       </div>
+
+      <!-- ── SIGN IN FORM ── -->
       <div class="auth-form active" id="form-login">
         <div class="auth-alert" id="login-alert">
           <span class="auth-alert-icon">⚠️</span>
           <span id="login-alert-msg">Incorrect roll number or password.</span>
         </div>
-        <div class="form-field"><label>Roll Number</label><input type="text" id="login-id" placeholder="e.g. 22CS101"></div>
-        <div class="form-field"><label>Password</label><input type="password" id="login-pass" placeholder="Enter password"></div>
-        <button class="auth-submit" onclick="doLogin()">Sign In</button>
+        <div class="auth-alert warn" id="login-session-warn" style="display:none;">
+          <span class="auth-alert-icon">🔒</span>
+          <span id="login-session-msg">This account is already logged in on another session.</span>
+          <div style="margin-top:8px;display:flex;gap:8px;">
+            <button onclick="forceLogin()" style="padding:5px 12px;background:#f39c12;color:white;border:none;border-radius:5px;font-size:12px;cursor:pointer;font-weight:600;">Force Sign In</button>
+            <button onclick="hideSessionWarn()" style="padding:5px 12px;background:#ecf0f1;color:#555;border:1px solid #ddd;border-radius:5px;font-size:12px;cursor:pointer;">Cancel</button>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Roll Number</label>
+          <input type="text" id="login-id" placeholder="e.g. 22CS101" onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+        </div>
+        <div class="form-field">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="login-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+            <button class="pw-toggle" type="button" onclick="togglePw('login-pass',this)" title="Show/hide password">👁</button>
+          </div>
+        </div>
+        <button class="auth-submit" id="login-btn" onclick="doLogin()">Sign In</button>
         <div class="auth-switch">No account? <a onclick="switchTab('signup')">Sign Up</a></div>
+        <div class="session-info">🔐 Each account can only be signed in once at a time</div>
       </div>
+
+      <!-- ── SIGN UP FORM ── -->
       <div class="auth-form" id="form-signup">
         <div class="auth-alert" id="signup-alert">
           <span class="auth-alert-icon">🚫</span>
           <span id="signup-alert-msg">An account with this roll number already exists.</span>
         </div>
-        <div class="form-field"><label>Full Name</label><input type="text" id="su-name" placeholder="Your full name"><div class="form-error" id="su-name-err">Please enter your name.</div></div>
-        <div class="form-field"><label>Roll Number</label><input type="text" id="su-roll" placeholder="e.g. 22CS101"><div class="form-error" id="su-roll-err">Please enter your roll number.</div><div class="form-error" id="su-roll-dup">This roll number is already registered.</div></div>
-        <div class="form-field"><label>Password</label><input type="password" id="su-pass" placeholder="Min 6 characters"><div class="form-error" id="su-pass-err">Password must be at least 6 characters.</div></div>
-        <div class="form-field"><label>Confirm Password</label><input type="password" id="su-pass2" placeholder="Re-enter password"><div class="form-error" id="su-pass2-err">Passwords do not match.</div></div>
-        <button class="auth-submit" onclick="doSignup()">Create Account</button>
+        <div class="form-field">
+          <label>Full Name</label>
+          <input type="text" id="su-name" placeholder="Your full name" onkeydown="if(event.key==='Enter')document.getElementById('su-roll').focus()">
+          <div class="form-error" id="su-name-err">Please enter your name.</div>
+        </div>
+        <div class="form-field">
+          <label>Roll Number</label>
+          <input type="text" id="su-roll" placeholder="e.g. 22CS101" onkeydown="if(event.key==='Enter')document.getElementById('su-pass').focus()" oninput="checkRollLive(this.value)">
+          <div class="form-error" id="su-roll-err">Please enter your roll number.</div>
+          <div class="form-error" id="su-roll-dup">
+            ⚠️ This roll number is already registered. Please <a onclick="switchTab('login')" style="color:#e74c3c;cursor:pointer;font-weight:700;">Sign In</a> instead.
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Password <span style="font-weight:400;color:#aaa;font-size:11px;">(min 6 characters)</span></label>
+          <div class="pw-wrap">
+            <input type="password" id="su-pass" placeholder="Create a password" oninput="checkPwStrength(this.value)" onkeydown="if(event.key==='Enter')document.getElementById('su-pass2').focus()">
+            <button class="pw-toggle" type="button" onclick="togglePw('su-pass',this)" title="Show/hide password">👁</button>
+          </div>
+          <div class="pw-strength"><div class="pw-strength-fill" id="pw-strength-bar"></div></div>
+          <div class="pw-strength-label" id="pw-strength-label"></div>
+          <div class="form-error" id="su-pass-err">Password must be at least 6 characters.</div>
+        </div>
+        <div class="form-field">
+          <label>Confirm Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="su-pass2" placeholder="Re-enter password" onkeydown="if(event.key==='Enter')doSignup()">
+            <button class="pw-toggle" type="button" onclick="togglePw('su-pass2',this)" title="Show/hide password">👁</button>
+          </div>
+          <div class="form-error" id="su-pass2-err">Passwords do not match.</div>
+        </div>
+        <button class="auth-submit" id="signup-btn" onclick="doSignup()">Create Account</button>
         <div class="auth-switch">Have an account? <a onclick="switchTab('login')">Sign In</a></div>
       </div>
     </div>
@@ -395,7 +463,7 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
 <div class="modal-overlay" id="dashModal">
   <div class="modal-box">
     <div class="modal-header">
-      <h2>My Dashboard</h2>
+      <h2>📊 My Dashboard</h2>
       <button class="back-home-btn" onclick="document.getElementById('dashModal').classList.remove('open')" style="padding:6px 12px;">✕</button>
     </div>
     <div class="modal-body" id="dashBody"></div>
@@ -509,8 +577,6 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
     <button class="sim-btn" id="sim-verify-btn" onclick="simTab('verify')" style="padding:8px 18px;font-size:13px;">Verify Euler's Theorem</button>
     <button class="sim-btn" id="sim-partial-btn" onclick="simTab('partial')" style="padding:8px 18px;font-size:13px;background:linear-gradient(to right,#7f8c8d,#555);">Find Partial Derivatives</button>
   </div>
-
-  <!-- VERIFY TAB -->
   <div id="sim-verify">
     <div class="var-toggle">
       <span style="font-size:12px;color:#7f8c8d;align-self:center;">Variables:</span>
@@ -521,7 +587,6 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
       <span>Examples:</span>
       <button class="ex-btn" onclick="loadSim('x^2 + 2*x*y + y^2',2,'v')">x²+2xy+y²</button>
       <button class="ex-btn" onclick="loadSim('x^3 + y^3',3,'v')">x³+y³</button>
-      <button class="ex-btn" onclick="loadSim('Math.sqrt(x*x + y*y)',1,'v')">√(x²+y²)</button>
       <button class="ex-btn" onclick="loadSim('x^2*y + x*y^2',3,'v')">x²y+xy²</button>
     </div>
     <div id="vv3-examples" style="display:none;" class="examples-row">
@@ -544,8 +609,6 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
     <button class="sim-btn" onclick="runVerify()">▶ Verify</button>
     <div class="result-box" id="verify-result"></div>
   </div>
-
-  <!-- PARTIAL DERIVATIVES TAB -->
   <div id="sim-partial" style="display:none;">
     <div class="var-toggle">
       <span style="font-size:12px;color:#7f8c8d;align-self:center;">Variables:</span>
@@ -553,14 +616,13 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
       <button class="vt-btn" id="pv3" onclick="setSimVars(3,'p')">x, y, z</button>
     </div>
     <div style="background:#e8f4fc;border:1px solid #b8d4f0;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#2c3e50;">
-      💡 <strong>Symbolic mode:</strong> Enter a polynomial function to get exact symbolic partial derivatives in terms of variables (x, y, z).
+      💡 <strong>Symbolic mode:</strong> Enter a polynomial function to get exact symbolic partial derivatives.
     </div>
     <div class="examples-row">
       <span>Examples:</span>
       <button class="ex-btn" onclick="loadSim('x^3 + 3*x*y^2','','p')">x³+3xy²</button>
       <button class="ex-btn" onclick="loadSim('x^2*y + y^3','','p')">x²y+y³</button>
       <button class="ex-btn" onclick="loadSim('x^2 + 2*x*y + y^2','','p')">x²+2xy+y²</button>
-      <button class="ex-btn" onclick="loadSim('x^3*y + x*y^3','','p')">x³y+xy³</button>
       <button class="ex-btn" onclick="loadSim('x^4 + 2*x^2*y^2 + y^4','','p')">x⁴+2x²y²+y⁴</button>
     </div>
     <div id="p3-examples" class="examples-row" style="display:none;">
@@ -573,7 +635,7 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
       <div class="sim-field">
         <label>f(x, y<span id="p-zlabel"></span>) =</label>
         <input type="text" id="p-fn" placeholder="e.g. x^3 + 3*x*y^2">
-        <div class="sim-hint">Polynomial terms only | Use: x^2, x*y, y^3, z^2 etc.</div>
+        <div class="sim-hint">Polynomial terms only | Use: x^2, x*y, y^3</div>
       </div>
     </div>
     <button class="sim-btn" onclick="runPartial()">🔢 Compute Symbolic Derivatives</button>
@@ -675,21 +737,279 @@ footer{margin-top:40px;padding:18px 0;text-align:center;color:#7f8c8d;font-size:
 </template>
 
 <script>
-// ══════════ AUTH ══════════
-function getUsers(){try{return JSON.parse(localStorage.getItem('vlab_users')||'{}');}catch(e){return{};}}
-function saveUsers(u){localStorage.setItem('vlab_users',JSON.stringify(u));}
-function getCurrentUser(){try{return JSON.parse(localStorage.getItem('vlab_current')||'null');}catch(e){return null;}}
-function setCurrentUser(u){if(u)localStorage.setItem('vlab_current',JSON.stringify(u));else localStorage.removeItem('vlab_current');}
-function getUserProgress(roll){try{return JSON.parse(localStorage.getItem('vlab_prog_'+roll)||'{}');}catch(e){return{};}}
-function saveUserProgress(roll,d){localStorage.setItem('vlab_prog_'+roll,JSON.stringify(d));}
+// ═══════════════════════════════════════════════
+// AUTH & SESSION SYSTEM
+// ═══════════════════════════════════════════════
 
-let currentUser=getCurrentUser();
+// Storage keys
+const USERS_KEY    = 'vlab_users';
+const CURRENT_KEY  = 'vlab_current';
+const SESSION_KEY  = 'vlab_sessions'; // tracks who's currently logged in
 
+function getUsers(){
+  try{ return JSON.parse(localStorage.getItem(USERS_KEY)||'{}'); }
+  catch(e){ return {}; }
+}
+function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+
+function getCurrentUser(){
+  try{ return JSON.parse(localStorage.getItem(CURRENT_KEY)||'null'); }
+  catch(e){ return null; }
+}
+function setCurrentUser(u){
+  if(u) localStorage.setItem(CURRENT_KEY, JSON.stringify(u));
+  else  localStorage.removeItem(CURRENT_KEY);
+}
+
+// Session registry — tracks which roll numbers have an active session
+// Value = a tab-unique session ID stored in sessionStorage
+function getSessions(){
+  try{ return JSON.parse(localStorage.getItem(SESSION_KEY)||'{}'); }
+  catch(e){ return {}; }
+}
+function saveSessions(s){ localStorage.setItem(SESSION_KEY, JSON.stringify(s)); }
+
+// Generate a unique ID for this browser tab
+const TAB_ID = Math.random().toString(36).slice(2) + Date.now().toString(36);
+
+function isRollLoggedIn(roll){
+  const sessions = getSessions();
+  return sessions[roll.toLowerCase()] !== undefined;
+}
+
+function registerSession(roll){
+  const sessions = getSessions();
+  sessions[roll.toLowerCase()] = TAB_ID;
+  saveSessions(sessions);
+}
+
+function clearSession(roll){
+  const sessions = getSessions();
+  delete sessions[roll.toLowerCase()];
+  saveSessions(sessions);
+}
+
+function isMySession(roll){
+  const sessions = getSessions();
+  return sessions[roll.toLowerCase()] === TAB_ID;
+}
+
+// On page load: verify our session is still ours
+let currentUser = getCurrentUser();
+if(currentUser){
+  // Repair: claim the session if it's stale (same tab re-opened)
+  registerSession(currentUser.roll);
+}
+
+// Clean up our session when this tab closes
+window.addEventListener('beforeunload', ()=>{
+  if(currentUser && isMySession(currentUser.roll)){
+    clearSession(currentUser.roll);
+  }
+});
+
+// ─── Pending login state (when a session conflict is detected) ───
+let _pendingLoginUser = null;
+
+// ─── UI helpers ───
+function showAlertEl(id, msg, type){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(msg){
+    const m = document.getElementById(id+'-msg');
+    if(m) m.textContent = msg;
+  }
+  el.className = 'auth-alert show' + (type ? ' '+type : '');
+  el.style.display = 'flex';
+}
+function hideAlertEl(id){
+  const el = document.getElementById(id);
+  if(el){ el.classList.remove('show'); el.style.display='none'; }
+}
+function showFE(id){ const e=document.getElementById(id); if(e)e.style.display='block'; }
+function hideFE(id){ const e=document.getElementById(id); if(e)e.style.display='none'; }
+
+// ─── Password visibility toggle ───
+function togglePw(inputId, btn){
+  const inp = document.getElementById(inputId);
+  if(!inp) return;
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+// ─── Password strength ───
+function checkPwStrength(val){
+  const bar   = document.getElementById('pw-strength-bar');
+  const label = document.getElementById('pw-strength-label');
+  if(!bar||!label) return;
+  if(val.length === 0){ bar.className='pw-strength-fill'; bar.style.width='0'; label.textContent=''; return; }
+  let score = 0;
+  if(val.length >= 6)  score++;
+  if(val.length >= 10) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+  if(score <= 2){ bar.className='pw-strength-fill weak'; label.textContent='Weak'; }
+  else if(score <= 4){ bar.className='pw-strength-fill medium'; label.textContent='Medium'; }
+  else { bar.className='pw-strength-fill strong'; label.textContent='Strong'; }
+}
+
+// ─── Live roll duplicate check ───
+function checkRollLive(val){
+  hideFE('su-roll-dup');
+  if(!val.trim()) return;
+  const users = getUsers();
+  if(users[val.trim().toLowerCase()]){
+    showFE('su-roll-dup');
+  }
+}
+
+// ─── Auth modal open/close ───
+function openAuth(tab){
+  hideAlertEl('login-alert');
+  hideAlertEl('login-session-warn');
+  hideAlertEl('signup-alert');
+  _pendingLoginUser = null;
+  document.getElementById('authModal').classList.add('open');
+  switchTab(tab);
+}
+function closeAuth(){
+  document.getElementById('authModal').classList.remove('open');
+  _pendingLoginUser = null;
+}
+function switchTab(tab){
+  hideAlertEl('login-alert');
+  hideAlertEl('signup-alert');
+  hideAlertEl('login-session-warn');
+  ['login','signup'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('form-'+t).classList.toggle('active', t===tab);
+  });
+}
+
+// ─── SIGN IN ───
+function doLogin(){
+  const rollRaw = document.getElementById('login-id').value.trim();
+  const pw      = document.getElementById('login-pass').value;
+  hideAlertEl('login-alert');
+  hideAlertEl('login-session-warn');
+
+  if(!rollRaw || !pw){
+    showAlertEl('login-alert', 'Please enter your roll number and password.');
+    return;
+  }
+
+  const roll  = rollRaw.toLowerCase();
+  const users = getUsers();
+  const u     = users[roll];
+
+  if(!u){
+    showAlertEl('login-alert', 'No account found for this roll number. Please sign up first.');
+    return;
+  }
+  if(u.password !== pw){
+    showAlertEl('login-alert', 'Incorrect password. Please try again.');
+    return;
+  }
+
+  // ── Session conflict check ──
+  // If another tab has this roll logged in AND it's not this tab, warn the user
+  const sessions = getSessions();
+  if(sessions[roll] && sessions[roll] !== TAB_ID){
+    // Another tab is active with this account
+    _pendingLoginUser = { name: u.name, roll: u.roll };
+    const el = document.getElementById('login-session-warn');
+    document.getElementById('login-session-msg').textContent =
+      `"${u.name}" is already signed in on another window/tab. Force sign in to continue here.`;
+    el.className = 'auth-alert warn show';
+    el.style.display = 'flex';
+    return;
+  }
+
+  // All clear — log in
+  completeLogin({ name: u.name, roll: u.roll });
+}
+
+function forceLogin(){
+  if(!_pendingLoginUser) return;
+  // Revoke existing session and take over
+  clearSession(_pendingLoginUser.roll);
+  completeLogin(_pendingLoginUser);
+  _pendingLoginUser = null;
+}
+
+function hideSessionWarn(){
+  hideAlertEl('login-session-warn');
+  _pendingLoginUser = null;
+}
+
+function completeLogin(user){
+  currentUser = user;
+  setCurrentUser(currentUser);
+  registerSession(currentUser.roll);
+  closeAuth();
+  renderHeader();
+}
+
+// ─── SIGN UP ───
+function doSignup(){
+  const name  = document.getElementById('su-name').value.trim();
+  const roll  = document.getElementById('su-roll').value.trim();
+  const pw    = document.getElementById('su-pass').value;
+  const pw2   = document.getElementById('su-pass2').value;
+
+  hideAlertEl('signup-alert');
+  ['su-name-err','su-roll-err','su-roll-dup','su-pass-err','su-pass2-err'].forEach(hideFE);
+
+  let ok = true;
+  if(!name){ showFE('su-name-err'); ok=false; }
+  if(!roll){ showFE('su-roll-err'); ok=false; }
+  if(pw.length < 6){ showFE('su-pass-err'); ok=false; }
+  if(pw !== pw2){ showFE('su-pass2-err'); ok=false; }
+  if(!ok) return;
+
+  const users = getUsers();
+  const key   = roll.toLowerCase();
+
+  // ── Duplicate account guard ──
+  if(users[key]){
+    showFE('su-roll-dup');
+    showAlertEl('signup-alert',
+      `Roll number "${roll}" is already registered. Please sign in instead.`);
+    return;
+  }
+
+  // Save new user
+  users[key] = { name, roll, password: pw };
+  saveUsers(users);
+
+  // Auto-login after signup
+  completeLogin({ name, roll });
+}
+
+// ─── SIGN OUT ───
+function doLogout(){
+  if(currentUser && isMySession(currentUser.roll)){
+    clearSession(currentUser.roll);
+  }
+  currentUser = null;
+  setCurrentUser(null);
+  const dd = document.getElementById('userDD');
+  if(dd) dd.classList.remove('open');
+  renderHeader();
+}
+
+// ─── Header render ───
 function renderHeader(){
-  const hr=document.getElementById('headerRight');
+  const hr = document.getElementById('headerRight');
   if(currentUser){
-    const ini=currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    hr.innerHTML=`
+    const ini = currentUser.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    hr.innerHTML = `
       <div class="user-chip" onclick="toggleDD()">
         <div class="user-avatar">${ini}</div>
         <span class="uname">${currentUser.name.split(' ')[0]}</span>
@@ -701,129 +1021,109 @@ function renderHeader(){
         <a onclick="doLogout()" class="logout">🚪 Sign Out</a>
       </div>`;
   } else {
-    hr.innerHTML=`
+    hr.innerHTML = `
       <button class="auth-btn btn-login" onclick="openAuth('login')">Sign In</button>
       <button class="auth-btn btn-signup" onclick="openAuth('signup')">Sign Up</button>`;
   }
   updateAllStatuses();
 }
 
-function toggleDD(){const dd=document.getElementById('userDD');if(dd)dd.classList.toggle('open');}
-document.addEventListener('click',e=>{
-  const dd=document.getElementById('userDD');
-  if(dd&&!e.target.closest('.user-chip')&&!e.target.closest('.user-dropdown'))dd.classList.remove('open');
+function toggleDD(){
+  const dd = document.getElementById('userDD');
+  if(dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', e=>{
+  const dd = document.getElementById('userDD');
+  if(dd && !e.target.closest('.user-chip') && !e.target.closest('.user-dropdown'))
+    dd.classList.remove('open');
 });
 
-function openAuth(tab){hideAlert('login-alert');hideAlert('signup-alert');document.getElementById('authModal').classList.add('open');switchTab(tab);}
-function closeAuth(){document.getElementById('authModal').classList.remove('open');}
-function switchTab(tab){
-  hideAlert('login-alert');hideAlert('signup-alert');
-  ['login','signup'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
-    document.getElementById('form-'+t).classList.toggle('active',t===tab);
-  });
+// ═══════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════
+const allSections = ['aim','theory','pretest','simulation','posttest','references','contributors','feedback'];
+const sLabels     = {aim:'Aim',theory:'Theory',pretest:'Pretest',simulation:'Simulation',posttest:'Posttest',references:'References',contributors:'Contributors',feedback:'Feedback'};
+
+function getUserProgress(roll){
+  try{ return JSON.parse(localStorage.getItem('vlab_prog_'+roll)||'{}'); }
+  catch(e){ return {}; }
 }
-function showAlert(id,msg){const el=document.getElementById(id);if(!el)return;if(msg){const m=document.getElementById(id+'-msg');if(m)m.textContent=msg;}el.classList.add('show');}
-function hideAlert(id){const el=document.getElementById(id);if(el)el.classList.remove('show');}
-function se(id,show){const el=document.getElementById(id);if(el)el.style.display=show?'block':'none';}
-
-function doLogin(){
-  const id=document.getElementById('login-id').value.trim().toLowerCase();
-  const pw=document.getElementById('login-pass').value;
-  hideAlert('login-alert');
-  const users=getUsers();const u=users[id];
-  if(!id||!pw){showAlert('login-alert','Please enter your roll number and password.');return;}
-  if(!u){showAlert('login-alert','No account found for this roll number. Please sign up first.');return;}
-  if(u.password!==pw){showAlert('login-alert','Incorrect password. Please try again.');return;}
-  currentUser={name:u.name,roll:u.roll};setCurrentUser(currentUser);closeAuth();renderHeader();
-}
-
-function doSignup(){
-  const name=document.getElementById('su-name').value.trim();
-  const roll=document.getElementById('su-roll').value.trim();
-  const pw=document.getElementById('su-pass').value;
-  const pw2=document.getElementById('su-pass2').value;
-  hideAlert('signup-alert');
-  ['su-name-err','su-roll-err','su-roll-dup','su-pass-err','su-pass2-err'].forEach(id=>se(id,false));
-  let ok=true;
-  if(!name){se('su-name-err',true);ok=false;}
-  if(!roll){se('su-roll-err',true);ok=false;}
-  if(pw.length<6){se('su-pass-err',true);ok=false;}
-  if(pw!==pw2){se('su-pass2-err',true);ok=false;}
-  if(!ok)return;
-  const users=getUsers();const key=roll.toLowerCase();
-  if(users[key]){se('su-roll-dup',true);showAlert('signup-alert','An account with roll number "'+roll+'" already exists. Please sign in instead.');return;}
-  users[key]={name,roll,password:pw};saveUsers(users);
-  currentUser={name,roll};setCurrentUser(currentUser);closeAuth();renderHeader();
-}
-
-function doLogout(){currentUser=null;setCurrentUser(null);renderHeader();}
-
-// ══════════ PROGRESS ══════════
-const allSections=['aim','theory','pretest','simulation','posttest','references','contributors','feedback'];
-const sLabels={aim:'Aim',theory:'Theory',pretest:'Pretest',simulation:'Simulation',posttest:'Posttest',references:'References',contributors:'Contributors',feedback:'Feedback'};
+function saveUserProgress(roll,d){ localStorage.setItem('vlab_prog_'+roll, JSON.stringify(d)); }
 
 function markVisited(s){
-  if(!currentUser)return;
-  const p=getUserProgress(currentUser.roll);
-  if(!p.visited)p.visited={};p.visited[s]=true;
-  saveUserProgress(currentUser.roll,p);updateAllStatuses();
+  if(!currentUser) return;
+  const p = getUserProgress(currentUser.roll);
+  if(!p.visited) p.visited = {};
+  p.visited[s] = true;
+  saveUserProgress(currentUser.roll, p);
+  updateAllStatuses();
 }
-function saveScore(s,score,total){
-  if(!currentUser)return;
-  const p=getUserProgress(currentUser.roll);
-  if(!p.scores)p.scores={};
-  p.scores[s]={score,total,date:new Date().toLocaleDateString()};
-  saveUserProgress(currentUser.roll,p);
+function saveScore(s, score, total){
+  if(!currentUser) return;
+  const p = getUserProgress(currentUser.roll);
+  if(!p.scores) p.scores = {};
+  p.scores[s] = { score, total, date: new Date().toLocaleDateString() };
+  saveUserProgress(currentUser.roll, p);
 }
 function updateAllStatuses(){
-  const p=currentUser?getUserProgress(currentUser.roll):{};
+  const p = currentUser ? getUserProgress(currentUser.roll) : {};
   allSections.forEach(s=>{
-    const el=document.getElementById('st-'+s);if(!el)return;
-    const v=p.visited&&p.visited[s];const sc=p.scores&&p.scores[s];
-    if(sc){el.textContent=sc.score+'/'+sc.total+' marks';el.className='card-status status-done';}
-    else if(v){el.textContent='Visited';el.className='card-status status-visited';}
-    else{el.textContent='Not Started';el.className='card-status status-not';}
+    const el = document.getElementById('st-'+s);
+    if(!el) return;
+    const v  = p.visited && p.visited[s];
+    const sc = p.scores  && p.scores[s];
+    if(sc){ el.textContent = sc.score+'/'+sc.total+' marks'; el.className='card-status status-done'; }
+    else if(v){ el.textContent='Visited'; el.className='card-status status-visited'; }
+    else{ el.textContent='Not Started'; el.className='card-status status-not'; }
   });
 }
 
-// ══════════ SECTION MODAL ══════════
-let simVarsV=2,simVarsP=2;
+// ═══════════════════════════════════════════════
+// SECTION MODAL
+// ═══════════════════════════════════════════════
+let simVarsV=2, simVarsP=2;
 
 function openSection(name){
   markVisited(name);
-  document.getElementById('modalTitle').textContent=sLabels[name];
-  const tpl=document.getElementById('tpl-'+name);
-  document.getElementById('modalBody').innerHTML=tpl?tpl.innerHTML:'<p>Content coming soon.</p>';
-  const modal=document.getElementById('sectionModal');
-  modal.classList.add('open');modal.scrollTop=0;
-  if(name==='pretest'){window._quizState={};buildAssessment(preQuestions,'pre');}
-  if(name==='posttest'){window._quizState={};buildAssessment(postQuestions,'post');}
-  if(name==='feedback')initStars();
+  document.getElementById('modalTitle').textContent = sLabels[name];
+  const tpl = document.getElementById('tpl-'+name);
+  document.getElementById('modalBody').innerHTML = tpl ? tpl.innerHTML : '<p>Content coming soon.</p>';
+  const modal = document.getElementById('sectionModal');
+  modal.classList.add('open');
+  modal.scrollTop = 0;
+  if(name==='pretest') { window._quizState={}; buildAssessment(preQuestions,'pre'); }
+  if(name==='posttest'){ window._quizState={}; buildAssessment(postQuestions,'post'); }
+  if(name==='feedback') initStars();
 }
-function closeSection(){document.getElementById('sectionModal').classList.remove('open');}
+function closeSection(){ document.getElementById('sectionModal').classList.remove('open'); }
 
 ['sectionModal','authModal','dashModal'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+  document.getElementById(id).addEventListener('click', function(e){
+    if(e.target===this) this.classList.remove('open');
+  });
 });
 
-// ══════════ DASHBOARD ══════════
+// ═══════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════
 function openDashboard(){
-  const dd=document.getElementById('userDD');if(dd)dd.classList.remove('open');
-  if(!currentUser)return;
-  const p=getUserProgress(currentUser.roll);
-  const visited=p.visited||{};const scores=p.scores||{};
-  const vc=Object.keys(visited).length;
-  let ts=0,tp=0;
-  if(scores.pretest){ts+=scores.pretest.score;tp+=scores.pretest.total;}
-  if(scores.posttest){ts+=scores.posttest.score;tp+=scores.posttest.total;}
+  const dd = document.getElementById('userDD');
+  if(dd) dd.classList.remove('open');
+  if(!currentUser) return;
+  const p       = getUserProgress(currentUser.roll);
+  const visited = p.visited||{};
+  const scores  = p.scores||{};
+  const vc      = Object.keys(visited).length;
+  let ts=0, tp=0;
+  if(scores.pretest) { ts+=scores.pretest.score; tp+=scores.pretest.total; }
+  if(scores.posttest){ ts+=scores.posttest.score; tp+=scores.posttest.total; }
   let topicsHTML='';
   allSections.forEach(s=>{
-    const v=visited[s];const sc=scores[s];
-    let pill,status;
-    if(sc){pill='pill-done';status=sc.score+'/'+sc.total+' marks';}
-    else if(v){pill='pill-visited';status='Visited';}
-    else{pill='pill-not';status='Not started';}
+    const v=visited[s]; const sc=scores[s];
+    let pill, status;
+    if(sc){ pill='pill-done'; status=sc.score+'/'+sc.total+' marks'; }
+    else if(v){ pill='pill-visited'; status='Visited'; }
+    else{ pill='pill-not'; status='Not started'; }
     topicsHTML+=`<li><span>${sLabels[s]}</span><span class="pill ${pill}">${status}</span></li>`;
   });
   document.getElementById('dashBody').innerHTML=`
@@ -851,125 +1151,108 @@ function openDashboard(){
   document.getElementById('dashModal').classList.add('open');
 }
 
-// ══════════════════════════════════════════════════════
-// QUIZ DATA — 10 questions each (5 original + 5 new tougher)
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// QUIZ DATA
+// ═══════════════════════════════════════════════
 const preQuestions=[
-  // ── Original 5 ──
   {q:"Which is a homogeneous function of degree 2?",
    opts:["x² + y²","x³ + y","x + y + 1","ln(x/y)"],ans:0,
    hint:"All terms must have the same degree. x²+y² has all terms of degree 2.",
    hintFormula:"x²: degree 2, y²: degree 2 → homogeneous of degree 2"},
-
   {q:"If f(x,y) = x³ + y³, the degree of homogeneity is:",
    opts:["1","2","3","0"],ans:2,
    hint:"f(tx,ty) = t³(x³+y³) = t³·f(x,y) → n = 3.",
    hintFormula:"f(tx,ty) = t³·f(x,y)  →  n = 3"},
-
   {q:"Euler's Theorem states that for homogeneous f of degree n:",
    opts:["x·fx + y·fy = f","x·fx + y·fy = nf","fx + fy = nf","x²·fx + y²·fy = nf"],ans:1,
    hint:"Each variable times its own partial derivative, sum equals n×f.",
    hintFormula:"x·(∂f/∂x) + y·(∂f/∂y) = n·f(x,y)"},
-
   {q:"f(x,y) = √(x² + y²) is homogeneous of degree:",
    opts:["0","½","1","2"],ans:2,
    hint:"f(tx,ty) = √(t²x²+t²y²) = t·f(x,y) → degree 1.",
    hintFormula:"f(tx,ty) = t¹·f(x,y)  →  n = 1"},
-
   {q:"∂/∂x (x² + 2xy) = ?",
    opts:["2x","2x + 2y","2y","x + 2y"],ans:1,
    hint:"Treat y as constant: ∂/∂x(x²)=2x, ∂/∂x(2xy)=2y.",
    hintFormula:"∂/∂x(x² + 2xy) = 2x + 2y"},
-
-  // ── 5 New Tougher Questions ──
-  {q:"If u = sin⁻¹((x² + y²)/(x + y)), which expression is correct according to Euler's theorem?",
+  {q:"If u = sin⁻¹((x² + y²)/(x + y)), which expression is correct by Euler's theorem?",
    opts:["x·ux + y·uy = sin(u)","x·ux + y·uy = u","x·ux + y·uy = tan(u)","x·ux + y·uy = 2u"],ans:0,
-   hint:"Let f = (x²+y²)/(x+y). Then f is homogeneous of degree 1 and u = sin⁻¹(f). For composite functions, x·ux + y·uy = n·f = n·sin(u).",
-   hintFormula:"n=1: x·ux + y·uy = 1·f = sin(u)"},
-
-  {q:"For f(x,y) = (x³ + y³)/(x + y), what is the value of x·∂f/∂x + y·∂f/∂y?",
+   hint:"Let f = (x²+y²)/(x+y). Degree = 1. u = sin⁻¹(f) → x·ux + y·uy = n·sin(u).",
+   hintFormula:"n=1: x·ux + y·uy = sin(u)"},
+  {q:"For f(x,y) = (x³ + y³)/(x + y), what is x·∂f/∂x + y·∂f/∂y?",
    opts:["f","2f","3f","0"],ans:1,
-   hint:"Degree of numerator = 3, degree of denominator = 1. So f is homogeneous of degree 3−1 = 2.",
+   hint:"Degree of numerator = 3, denominator = 1. f is homogeneous of degree 2.",
    hintFormula:"Degree = 3 − 1 = 2  →  x·fx + y·fy = 2f"},
-
   {q:"The second order Euler's formula gives x²·fxx + 2xy·fxy + y²·fyy = ?",
    opts:["n·f","n(n+1)·f","n(n−1)·f","(n−1)·f"],ans:2,
    hint:"This is the second-order extension of Euler's theorem.",
    hintFormula:"x²·fxx + 2xy·fxy + y²·fyy = n(n−1)·f"},
-
   {q:"If f(x,y) = x² ln(y/x), then f is:",
    opts:["Homogeneous of degree 2","Homogeneous of degree 1","Not homogeneous","Homogeneous of degree 0"],ans:0,
-   hint:"f(tx,ty) = t²x² · ln(ty/tx) = t²x² · ln(y/x) = t²·f(x,y). The ln(y/x) part has degree 0.",
+   hint:"f(tx,ty) = t²x² · ln(ty/tx) = t²x² · ln(y/x) = t²·f(x,y).",
    hintFormula:"f(tx,ty) = t² · x² · ln(y/x) = t²·f(x,y)  →  n=2"},
-
   {q:"If u = f(x,y) is homogeneous of degree n, and v = ln(u), then x·vx + y·vy equals:",
    opts:["n","n·v","n/u","n·u"],ans:0,
-   hint:"v = ln(u), so vx = ux/u, vy = uy/u. Then x·vx + y·vy = (x·ux + y·uy)/u = n·u/u = n.",
+   hint:"vx = ux/u. Then x·vx + y·vy = (x·ux + y·uy)/u = n·u/u = n.",
    hintFormula:"x·vx + y·vy = (x·ux + y·uy)/u = n·u/u = n"}
 ];
 
 const postQuestions=[
-  // ── Original 5 ──
   {q:"For f(x,y,z)=x³+y³+z³, Euler's theorem gives:",
    opts:["fx+fy+fz=3f","x·fx+y·fy+z·fz=3f","x·fx+y·fy+z·fz=f","x·fx+y·fy=3f"],ans:1,
    hint:"3-var homogeneous function of degree 3. Use 3-variable form.",
    hintFormula:"x·fx + y·fy + z·fz = n·f  (n=3)"},
-
   {q:"If f(tx,ty) = t⁴·f(x,y), then n =",
    opts:["1","2","3","4"],ans:3,
    hint:"Definition: f(tx,ty) = tⁿ·f(x,y). Read the power of t.",
    hintFormula:"f(tx,ty) = t⁴·f(x,y)  →  n = 4"},
-
   {q:"f(x,y) = x²y + xy² is homogeneous of degree:",
    opts:["2","3","4","1"],ans:1,
    hint:"x²y: degree 3, xy²: degree 3. All same → degree 3.",
    hintFormula:"All terms have degree 3  →  n = 3"},
-
   {q:"Which is NOT a homogeneous function?",
    opts:["x²+xy","x³+y³","x+y+1","x²y"],ans:2,
    hint:"Constant '1' has degree 0, breaking homogeneity.",
    hintFormula:"f(tx,ty) = tx+ty+1 ≠ tⁿ(x+y+1)"},
-
   {q:"For f(x,y)=x²+2xy+y², x·∂f/∂x + y·∂f/∂y = ?",
    opts:["f","2f","3f","0"],ans:1,
    hint:"∂f/∂x=2x+2y, ∂f/∂y=2x+2y. x(2x+2y)+y(2x+2y)=2f.",
    hintFormula:"= 2(x²+2xy+y²) = 2f"},
-
-  // ── 5 New Tougher Questions ──
-  {q:"If u = tan⁻¹((x³ + y³)/(x² − xy + y²)), which statement is correct?",
+  {q:"If u = tan⁻¹((x³ + y³)/(x² − xy + y²)), which is correct?",
    opts:["x·ux + y·uy = sin(2u)/2","x·ux + y·uy = sin(u)","x·ux + y·uy = u","x·ux + y·uy = 2·tan(u)"],ans:0,
-   hint:"Let f = (x³+y³)/(x²−xy+y²). Degree of numerator = 3, denominator = 2, so f has degree 1. Then u = tan⁻¹(f) gives x·ux + y·uy = n·f·(1/(1+f²)) = sin(u)cos(u) = sin(2u)/2.",
+   hint:"f = (x³+y³)/(x²−xy+y²) has degree 1. u = tan⁻¹(f) → x·ux + y·uy = sin(u)cos(u) = sin(2u)/2.",
    hintFormula:"n=1: x·ux + y·uy = sin(u)·cos(u) = sin(2u)/2"},
-
   {q:"For f(x,y) = x⁴ + x²y² + y⁴, the value of x²·fxx + 2xy·fxy + y²·fyy is:",
    opts:["4f","12f","6f","8f"],ans:1,
    hint:"f is homogeneous of degree 4. Apply second-order Euler: n(n−1)·f = 4×3×f = 12f.",
    hintFormula:"n=4: n(n−1)·f = 4·3·f = 12f"},
-
   {q:"If f(x,y,z) = (x²y + y²z + z²x)/(x + y + z), the degree of f is:",
-   opts:["1","2","3","0"],ans:0,
-   hint:"Numerator degree = 3 (each term is degree 3). Denominator degree = 1. So f has degree 3−1 = 2. Wait — each term: x²y, y²z, z²x each have degree 3; denominator degree 1. So degree = 2.",
+   opts:["1","2","3","0"],ans:1,
+   hint:"Numerator degree 3 (each term), denominator degree 1. Degree = 3−1 = 2.",
    hintFormula:"degree = 3 (numerator) − 1 (denominator) = 2"},
-
-  {q:"Given u = f(x,y) homogeneous of degree n, which of these correctly applies the deduction for x·(∂²u/∂x²) + y·(∂²u/∂x∂y)?",
-   opts:["= (n−1)·∂u/∂x","= n·∂u/∂x","= (n+1)·∂u/∂x","= n(n−1)·u"],ans:0,
-   hint:"Differentiate Euler's equation x·ux + y·uy = n·u partially with respect to x. Then x·uxx + y·uxy = (n−1)·ux.",
+  {q:"Given u = f(x,y) homogeneous of degree n, x·(∂²u/∂x²) + y·(∂²u/∂x∂y) equals:",
+   opts:["(n−1)·∂u/∂x","n·∂u/∂x","(n+1)·∂u/∂x","n(n−1)·u"],ans:0,
+   hint:"Differentiate Euler's x·ux + y·uy = n·u with respect to x → x·uxx + y·uxy = (n−1)·ux.",
    hintFormula:"∂/∂x[x·ux + y·uy = n·u]  →  x·uxx + y·uxy = (n−1)·ux"},
-
-  {q:"If f(x,y) = x^a · y^b is homogeneous and satisfies x·fx + y·fy = 5·f, then:",
+  {q:"If f(x,y) = x^a · y^b satisfies x·fx + y·fy = 5·f, then:",
    opts:["a − b = 5","a + b = 5","a · b = 5","a/b = 5"],ans:1,
-   hint:"fx = a·x^(a-1)·y^b, fy = b·x^a·y^(b-1). Then x·fx + y·fy = (a+b)·x^a·y^b = (a+b)·f. So a+b = n = 5.",
+   hint:"x·fx + y·fy = (a+b)·x^a·y^b = (a+b)·f. So a+b = 5.",
    hintFormula:"x·fx + y·fy = (a+b)·f = 5f  →  a+b = 5"}
 ];
 
-// ══════════ QUIZ ENGINE ══════════
-function buildAssessment(questions,prefix){
-  const c=document.getElementById(prefix+'test-container');if(!c)return;
-  c.innerHTML='';
+// ═══════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════
+function buildAssessment(questions, prefix){
+  const c = document.getElementById(prefix+'test-container');
+  if(!c) return;
+  c.innerHTML = '';
   questions.forEach((q,qi)=>{
-    const div=document.createElement('div');div.className='quiz-question';div.id=`${prefix}-q-${qi}`;
-    const dots=[0,1,2].map(i=>`<span class="attempt-dot${i===0?' current':''}" id="${prefix}-dot-${qi}-${i}"></span>`).join('');
-    div.innerHTML=`
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.id = `${prefix}-q-${qi}`;
+    const dots = [0,1,2].map(i=>`<span class="attempt-dot${i===0?' current':''}" id="${prefix}-dot-${qi}-${i}"></span>`).join('');
+    div.innerHTML = `
       <p class="q-text">${qi+1}. ${q.q}</p>
       <div class="attempt-row"><span class="attempt-label">Attempts left:</span><div class="attempt-dots">${dots}</div></div>
       <ul class="quiz-options" id="${prefix}-opts-${qi}">
@@ -991,15 +1274,25 @@ function buildAssessment(questions,prefix){
   });
 }
 function getState(p,qi){
-  if(!window._quizState)window._quizState={};
+  if(!window._quizState) window._quizState={};
   const k=p+qi;
-  if(!window._quizState[k])window._quizState[k]={attempts:0,hintUsed:false,hintShown:false,done:false,marksAwarded:false};
+  if(!window._quizState[k]) window._quizState[k]={attempts:0,hintUsed:false,hintShown:false,done:false,marksAwarded:false};
   return window._quizState[k];
 }
-function updateDots(p,qi,a){for(let i=0;i<3;i++){const d=document.getElementById(`${p}-dot-${qi}-${i}`);if(!d)continue;d.className='attempt-dot';if(i<a)d.classList.add('used');else if(i===a)d.classList.add('current');}}
+function updateDots(p,qi,a){
+  for(let i=0;i<3;i++){
+    const d=document.getElementById(`${p}-dot-${qi}-${i}`);
+    if(!d)continue;
+    d.className='attempt-dot';
+    if(i<a)d.classList.add('used');
+    else if(i===a)d.classList.add('current');
+  }
+}
 function disableOpts(p,qi){document.querySelectorAll(`input[name="${p}q${qi}"]`).forEach(o=>o.disabled=true);}
-function showFB(p,qi,type,msg){const el=document.getElementById(`${p}-fb-${qi}`);el.className=`q-feedback ${type}`;el.innerHTML=msg;el.style.display='block';}
-
+function showFB(p,qi,type,msg){
+  const el=document.getElementById(`${p}-fb-${qi}`);
+  el.className=`q-feedback ${type}`;el.innerHTML=msg;el.style.display='block';
+}
 function handleAnswer(p,qi,sel){
   const q=(p==='pre'?preQuestions:postQuestions)[qi];
   const st=getState(p,qi);
@@ -1013,22 +1306,32 @@ function processAnswer(p,qi,sel,q,st,isHint){
   if(sel===q.ans){
     disableOpts(p,qi);
     document.getElementById(`${p}-li-${qi}-${sel}`).classList.add('correct');
-    if(st.hintUsed){showFB(p,qi,'correct','🎉 Congratulations! Your answer is correct — but since you used a hint, no marks are awarded.');}
-    else{showFB(p,qi,'correct','🎉 Congratulations! Your answer is correct! <strong>+1 mark awarded.</strong>');st.marksAwarded=true;updateScore(p);}
+    if(st.hintUsed){showFB(p,qi,'correct','🎉 Congratulations! Correct — but since you used a hint, no marks are awarded.');}
+    else{showFB(p,qi,'correct','🎉 Congratulations! Correct! <strong>+1 mark awarded.</strong>');st.marksAwarded=true;updateScore(p);}
     st.done=true;
   }else{
     document.getElementById(`${p}-li-${qi}-${sel}`).classList.add('wrong');
     document.querySelector(`input[name="${p}q${qi}"][value="${sel}"]`).checked=false;
-    if(isHint){disableOpts(p,qi);document.getElementById(`${p}-li-${qi}-${q.ans}`).classList.add('reveal');showFB(p,qi,'neutral','❌ Incorrect again. Correct answer highlighted above.');st.done=true;}
-    else if(st.attempts>=3){disableOpts(p,qi);showFB(p,qi,'neutral','❌ Incorrect. All 3 attempts used.');document.getElementById(`${p}-hint-prompt-${qi}`).style.display='block';}
-    else{const left=3-st.attempts;showFB(p,qi,'wrong',`❌ Incorrect! Try again. <strong>${left} attempt${left>1?'s':''}</strong> left.`);document.querySelectorAll(`input[name="${p}q${qi}"]`).forEach(o=>o.disabled=false);document.getElementById(`${p}-li-${qi}-${sel}`).classList.remove('wrong');}
+    if(isHint){
+      disableOpts(p,qi);
+      document.getElementById(`${p}-li-${qi}-${q.ans}`).classList.add('reveal');
+      showFB(p,qi,'neutral','❌ Incorrect. Correct answer highlighted above.');st.done=true;
+    }else if(st.attempts>=3){
+      disableOpts(p,qi);showFB(p,qi,'neutral','❌ All 3 attempts used.');
+      document.getElementById(`${p}-hint-prompt-${qi}`).style.display='block';
+    }else{
+      const left=3-st.attempts;
+      showFB(p,qi,'wrong',`❌ Incorrect! <strong>${left} attempt${left>1?'s':''}</strong> remaining.`);
+      document.querySelectorAll(`input[name="${p}q${qi}"]`).forEach(o=>o.disabled=false);
+      document.getElementById(`${p}-li-${qi}-${sel}`).classList.remove('wrong');
+    }
   }
 }
 function showHint(p,qi){
   const st=getState(p,qi);st.hintUsed=true;st.hintShown=true;
   document.getElementById(`${p}-hint-prompt-${qi}`).style.display='none';
   document.getElementById(`${p}-hint-box-${qi}`).style.display='block';
-  showFB(p,qi,'info','💡 Hint shown. Try again — correct after hint earns <strong>0 marks</strong>.');
+  showFB(p,qi,'info','💡 Hint shown. Correct after hint earns <strong>0 marks</strong>.');
   document.querySelectorAll(`input[name="${p}q${qi}"]`).forEach(o=>o.disabled=false);
 }
 function skipHint(p,qi){
@@ -1046,972 +1349,234 @@ function updateScore(p){
   if(sc){sc.style.display='block';sc.innerHTML=`📊 Score: <strong>${score}/${total}</strong> (${Math.round(score/total*100)}%)`;}
   saveScore(p==='pre'?'pretest':'posttest',score,total);updateAllStatuses();
 }
-// ══════════ SIMULATION ══════════
 
+// ═══════════════════════════════════════════════
+// SIMULATION
+// ═══════════════════════════════════════════════
 function simTab(t){
-  document.getElementById('sim-verify').style.display =
-    t==='verify' ? 'block' : 'none';
-
-  document.getElementById('sim-partial').style.display =
-    t==='partial' ? 'block' : 'none';
-
-  document.getElementById('sim-verify-btn').style.background =
-    t==='verify'
-      ? 'linear-gradient(to right,#3498db,#2c80b9)'
-      : 'linear-gradient(to right,#7f8c8d,#555)';
-
-  document.getElementById('sim-partial-btn').style.background =
-    t==='partial'
-      ? 'linear-gradient(to right,#3498db,#2c80b9)'
-      : 'linear-gradient(to right,#7f8c8d,#555)';
+  document.getElementById('sim-verify').style.display = t==='verify'?'block':'none';
+  document.getElementById('sim-partial').style.display = t==='partial'?'block':'none';
+  document.getElementById('sim-verify-btn').style.background = t==='verify'?'linear-gradient(to right,#3498db,#2c80b9)':'linear-gradient(to right,#7f8c8d,#555)';
+  document.getElementById('sim-partial-btn').style.background = t==='partial'?'linear-gradient(to right,#3498db,#2c80b9)':'linear-gradient(to right,#7f8c8d,#555)';
 }
-
 function setSimVars(n,m){
-
   if(m==='v'){
-
     simVarsV=n;
-
     document.getElementById('vv2').classList.toggle('active',n===2);
     document.getElementById('vv3').classList.toggle('active',n===3);
-
-    document.getElementById('v-zlabel').textContent =
-      n===3 ? ', z' : '';
-
-    document.getElementById('vv3-examples').style.display =
-      n===3 ? 'flex' : 'none';
-
+    document.getElementById('v-zlabel').textContent=n===3?', z':'';
+    document.getElementById('vv3-examples').style.display=n===3?'flex':'none';
   }else{
-
     simVarsP=n;
-
     document.getElementById('pv2').classList.toggle('active',n===2);
     document.getElementById('pv3').classList.toggle('active',n===3);
-
-    document.getElementById('p-zlabel').textContent =
-      n===3 ? ', z' : '';
-
+    document.getElementById('p-zlabel').textContent=n===3?', z':'';
     const p3ex=document.getElementById('p3-examples');
-
-    if(p3ex)
-      p3ex.style.display=n===3?'flex':'none';
+    if(p3ex) p3ex.style.display=n===3?'flex':'none';
   }
 }
-
 function loadSim(fn,deg,m){
-
   if(m==='v'){
-
     document.getElementById('v-fn').value=fn;
-
-    if(deg!=='')
-      document.getElementById('v-deg').value=deg;
-
+    if(deg!=='') document.getElementById('v-deg').value=deg;
   }else{
-
     document.getElementById('p-fn').value=fn;
   }
 }
+function showR(el,html,t){ el.innerHTML=html; el.style.display='block'; el.className='result-box '+t; }
 
-function showR(el,html,t){
-  el.innerHTML=html;
-  el.style.display='block';
-  el.className='result-box '+t;
-}
-
-// ══════════════════════════════════════════════════════════
-// SYMBOLIC POLYNOMIAL ENGINE
-// ══════════════════════════════════════════════════════════
-
+// Polynomial engine
 function parsePolynomial(expr){
-
-  let s = expr
-    .replace(/\s+/g,'')
-    .replace(/\*\*/g,'^');
-
-  // Insert explicit multiplication
-  s = s.replace(/([0-9])([a-z])/g,'$1*$2');
-  s = s.replace(/([a-z])([a-z])/g,'$1*$2');
-  s = s.replace(/([a-z])\^([0-9]+)([a-z])/g,'$1^$2*$3');
-
-  // Split terms
-  s = s.replace(/^-/,'NEG');
-
-  let rawTerms = s.split(/(?=[+-])/);
-
-  rawTerms = rawTerms.map(t =>
-    t.replace(/^NEG/,'-')
-  );
-
-  const terms = [];
-
+  let s=expr.replace(/\s+/g,'').replace(/\*\*/g,'^');
+  s=s.replace(/([0-9])([a-z])/g,'$1*$2');
+  s=s.replace(/([a-z])([a-z])/g,'$1*$2');
+  s=s.replace(/([a-z])\^([0-9]+)([a-z])/g,'$1^$2*$3');
+  s=s.replace(/^-/,'NEG');
+  let rawTerms=s.split(/(?=[+-])/);
+  rawTerms=rawTerms.map(t=>t.replace(/^NEG/,'-'));
+  const terms=[];
   for(let raw of rawTerms){
-
-    raw = raw.trim();
-
-    if(!raw) continue;
-
-    let sign = 1;
-
-    if(raw.startsWith('-')){
-      sign = -1;
-      raw = raw.slice(1);
-    }
-    else if(raw.startsWith('+')){
-      raw = raw.slice(1);
-    }
-
-    const factors = raw.split('*');
-
-    let coeff = sign;
-
-    const powers = {
-      x:0,
-      y:0,
-      z:0
-    };
-
+    raw=raw.trim(); if(!raw) continue;
+    let sign=1;
+    if(raw.startsWith('-')){sign=-1;raw=raw.slice(1);}
+    else if(raw.startsWith('+')) raw=raw.slice(1);
+    const factors=raw.split('*');
+    let coeff=sign;
+    const powers={x:0,y:0,z:0};
     for(let f of factors){
-
-      f = f.trim();
-
-      if(!f) continue;
-
-      // number
-      if(/^[0-9.]+$/.test(f)){
-
-        coeff *= parseFloat(f);
-
-      }else{
-
-        // x^2
-        const m = f.match(/^([xyz])\^([0-9]+)$/);
-
-        if(m){
-
-          powers[m[1]] += parseInt(m[2]);
-
-        }else if(/^[xyz]$/.test(f)){
-
-          powers[f] += 1;
-
-        }else{
-
-          return null;
-        }
+      f=f.trim(); if(!f) continue;
+      if(/^[0-9.]+$/.test(f)){ coeff*=parseFloat(f); }
+      else {
+        const m=f.match(/^([xyz])\^([0-9]+)$/);
+        if(m){ powers[m[1]]+=parseInt(m[2]); }
+        else if(/^[xyz]$/.test(f)){ powers[f]+=1; }
+        else return null;
       }
     }
-
-    terms.push({
-      coeff,
-      powers
-    });
+    terms.push({coeff,powers});
   }
-
   return terms;
 }
-
-// ══════════════════════════════════════════════════════════
-// DIFFERENTIATION
-// ══════════════════════════════════════════════════════════
-
 function diffTerms(terms,v){
-
   const result=[];
-
   for(const {coeff,powers} of terms){
-
-    const p = powers[v];
-
-    if(p===0) continue;
-
-    const newCoeff = coeff*p;
-
-    const newPowers = {...powers};
-
-    newPowers[v] = p-1;
-
-    result.push({
-      coeff:newCoeff,
-      powers:newPowers
-    });
+    const p=powers[v]; if(p===0) continue;
+    result.push({coeff:coeff*p, powers:{...powers, [v]:p-1}});
   }
-
   return result;
 }
-
-// ══════════════════════════════════════════════════════════
-// RENDER TERMS
-// ══════════════════════════════════════════════════════════
-
 function renderTerms(terms){
-
-  if(terms.length===0)
-    return '0';
-
+  if(terms.length===0) return '0';
   let out='';
-
   for(let i=0;i<terms.length;i++){
-
-    const {coeff,powers} = terms[i];
-
-    if(coeff===0) continue;
-
-    let absC = Math.abs(coeff);
-
-    // sign
-    if(i===0){
-
-      out += coeff<0 ? '−' : '';
-
-    }else{
-
-      out += coeff<0 ? ' − ' : ' + ';
-    }
-
-    const varStr = ['x','y','z']
-      .filter(v=>powers[v]>0)
-      .map(v =>
-        powers[v]===1
-          ? v
-          : v+'<sup>'+powers[v]+'</sup>'
-      )
-      .join('');
-
-    // coefficient
-    if(absC!==1 || varStr===''){
-
-      out += Number.isInteger(absC)
-        ? absC.toString()
-        : absC.toFixed(4);
-    }
-
-    out += varStr;
+    const {coeff,powers}=terms[i]; if(coeff===0) continue;
+    let absC=Math.abs(coeff);
+    if(i===0){ out+=coeff<0?'−':''; }
+    else { out+=coeff<0?' − ':' + '; }
+    const varStr=['x','y','z'].filter(v=>powers[v]>0).map(v=>powers[v]===1?v:v+'<sup>'+powers[v]+'</sup>').join('');
+    if(absC!==1||varStr==='') out+=Number.isInteger(absC)?absC.toString():absC.toFixed(4);
+    out+=varStr;
   }
-
-  return out || '0';
+  return out||'0';
 }
-
-// ══════════════════════════════════════════════════════════
-// DEGREE DETECTION
-// ══════════════════════════════════════════════════════════
-
 function detectDegree(terms){
-
-  if(!terms || terms.length===0)
-    return null;
-
-  const degrees = terms
-    .filter(t=>t.coeff!==0)
-    .map(t =>
-      t.powers.x +
-      t.powers.y +
-      t.powers.z
-    );
-
-  if(degrees.length===0)
-    return 0;
-
-  const d0 = degrees[0];
-
-  return degrees.every(d=>d===d0)
-    ? d0
-    : null;
+  if(!terms||terms.length===0) return null;
+  const degrees=terms.filter(t=>t.coeff!==0).map(t=>t.powers.x+t.powers.y+t.powers.z);
+  if(degrees.length===0) return 0;
+  const d0=degrees[0];
+  return degrees.every(d=>d===d0)?d0:null;
 }
-
-// ══════════════════════════════════════════════════════════
-// COLLECT LIKE TERMS
-// ══════════════════════════════════════════════════════════
-
 function collectTerms(terms){
-
-  const map = {};
-
+  const map={};
   for(const {coeff,powers} of terms){
-
-    const key =
-      `${powers.x},${powers.y},${powers.z}`;
-
-    if(map[key]){
-
-      map[key].coeff += coeff;
-
-    }else{
-
-      map[key] = {
-        coeff,
-        powers:{...powers}
-      };
-    }
+    const key=`${powers.x},${powers.y},${powers.z}`;
+    if(map[key]){ map[key].coeff+=coeff; }
+    else { map[key]={coeff,powers:{...powers}}; }
   }
-
-  return Object.values(map)
-    .filter(t=>Math.abs(t.coeff)>1e-10);
+  return Object.values(map).filter(t=>Math.abs(t.coeff)>1e-10);
 }
-
-// ══════════════════════════════════════════════════════════
-// BUILD EULER SUM
-// ══════════════════════════════════════════════════════════
-
 function buildEulerSum(terms,is3){
-
-  const multiplyVar = (dTerms,v) =>
-    dTerms.map(t=>{
-
-      const newPow = {...t.powers};
-
-      newPow[v] += 1;
-
-      return {
-        coeff:t.coeff,
-        powers:newPow
-      };
-    });
-
-  const dxTerms =
-    multiplyVar(diffTerms(terms,'x'),'x');
-
-  const dyTerms =
-    multiplyVar(diffTerms(terms,'y'),'y');
-
-  let combined = [
-    ...dxTerms,
-    ...dyTerms
-  ];
-
-  if(is3){
-
-    const dzTerms =
-      multiplyVar(diffTerms(terms,'z'),'z');
-
-    combined = [
-      ...combined,
-      ...dzTerms
-    ];
-  }
-
+  const mv=(dTerms,v)=>dTerms.map(t=>({coeff:t.coeff,powers:{...t.powers,[v]:t.powers[v]+1}}));
+  const dxTerms=mv(diffTerms(terms,'x'),'x');
+  const dyTerms=mv(diffTerms(terms,'y'),'y');
+  let combined=[...dxTerms,...dyTerms];
+  if(is3){ const dzTerms=mv(diffTerms(terms,'z'),'z'); combined=[...combined,...dzTerms]; }
   return collectTerms(combined);
 }
-
-// ══════════════════════════════════════════════════════════
-// VERIFY SYMBOLIC MATCH
-// ══════════════════════════════════════════════════════════
-
 function verifySymbolicMatch(a,b){
-
-  return (
-    renderTerms(collectTerms(a)) ===
-    renderTerms(collectTerms(b))
-  );
+  return renderTerms(collectTerms(a))===renderTerms(collectTerms(b));
 }
-
-// ══════════════════════════════════════════════════════════
-// VERIFY TAB
-// SYMBOLIC ONLY
-// ══════════════════════════════════════════════════════════
-
 function runVerify(){
-
-  const expr =
-    document.getElementById('v-fn')
-    .value
-    .trim();
-
-  const n =
-    parseInt(
-      document.getElementById('v-deg').value
-    );
-
-  const out =
-    document.getElementById('verify-result');
-
-  if(!expr){
-
-    showR(
-      out,
-      '<div style="color:#e74c3c">Please enter a function.</div>',
-      'error'
-    );
-
-    return;
-  }
-
-  const is3 = simVarsV===3;
-
-  const terms = parsePolynomial(expr);
-
-  if(!terms){
-
-    showR(out,`
-      <div class="step-item">
-        <div class="step-label">Parse Error</div>
-        <div class="step-val">
-          Only polynomial expressions are supported.
-        </div>
-      </div>
-    `,'error');
-
-    return;
-  }
-
-  const detectedDegree =
-    detectDegree(terms);
-
-  const isHomogeneous =
-    detectedDegree===n;
-
-  let h='';
-
-  // GIVEN
-  h += `
-    <div class="step-item">
-      <div class="step-label">Given Function</div>
-      <div class="step-val">
-        f(${is3?'x,y,z':'x,y'}) =
-        <strong>${renderTerms(terms)}</strong>
-      </div>
+  const expr=document.getElementById('v-fn').value.trim();
+  const n=parseInt(document.getElementById('v-deg').value);
+  const out=document.getElementById('verify-result');
+  if(!expr){ showR(out,'<div style="color:#e74c3c">Please enter a function.</div>','error'); return; }
+  const is3=simVarsV===3;
+  const terms=parsePolynomial(expr);
+  if(!terms){ showR(out,'<div class="step-item"><div class="step-label">Parse Error</div><div class="step-val">Only polynomial expressions are supported.</div></div>','error'); return; }
+  const detectedDegree=detectDegree(terms);
+  const isHomogeneous=detectedDegree===n;
+  let h=`<div class="step-item"><div class="step-label">Given Function</div><div class="step-val">f(${is3?'x,y,z':'x,y'}) = <strong>${renderTerms(terms)}</strong></div></div>`;
+  h+=`<div class="step-item"><div class="step-label">Homogeneity Check</div><div class="step-val">${isHomogeneous?`<span class="badge-ok">✓ Homogeneous of degree ${n}</span>`:`<span class="badge-fail">✗ Not homogeneous of degree ${n}</span>`}</div></div>`;
+  if(!isHomogeneous){ showR(out,h,'error'); return; }
+  const dxTerms=diffTerms(terms,'x');
+  const dyTerms=diffTerms(terms,'y');
+  const dzTerms=is3?diffTerms(terms,'z'):[];
+  h+=`<div class="step-item"><div class="step-label">∂f / ∂x</div><div class="step-val" style="font-family:'Courier New',monospace;">${renderTerms(dxTerms)}</div></div>`;
+  h+=`<div class="step-item"><div class="step-label">∂f / ∂y</div><div class="step-val" style="font-family:'Courier New',monospace;">${renderTerms(dyTerms)}</div></div>`;
+  if(is3) h+=`<div class="step-item"><div class="step-label">∂f / ∂z</div><div class="step-val" style="font-family:'Courier New',monospace;">${renderTerms(dzTerms)}</div></div>`;
+  const eulerSum=buildEulerSum(terms,is3);
+  const nfTerms=terms.map(t=>({coeff:t.coeff*n,powers:{...t.powers}}));
+  const verified=verifySymbolicMatch(eulerSum,nfTerms);
+  h+=`<div class="step-item"><div class="step-label">Euler's Theorem</div><div class="step-val">
+    <div style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:12px;margin-bottom:12px;">
+      <div style="font-size:13px;color:#7f8c8d;margin-bottom:5px;">x·(∂f/∂x) + y·(∂f/∂y)${is3?' + z·(∂f/∂z)':''}</div>
+      <div style="font-family:'Courier New',monospace;font-size:16px;color:#155724;font-weight:600;">${renderTerms(eulerSum)}</div>
     </div>
-  `;
-
-  // HOMOGENEITY
-  h += `
-    <div class="step-item">
-      <div class="step-label">
-        Homogeneity Check
-      </div>
-
-      <div class="step-val">
-
-        ${
-          isHomogeneous
-          ? `
-            <span class="badge-ok">
-              ✓ Homogeneous of degree ${n}
-            </span>
-          `
-          : `
-            <span class="badge-fail">
-              ✗ Not homogeneous of degree ${n}
-            </span>
-          `
-        }
-
-      </div>
+    <div style="background:#f0fff4;border:1px solid #b2dfdb;border-radius:6px;padding:12px;">
+      <div style="font-size:13px;color:#7f8c8d;margin-bottom:5px;">n · f(${is3?'x,y,z':'x,y'})</div>
+      <div style="font-family:'Courier New',monospace;font-size:16px;color:#155724;font-weight:600;">${renderTerms(nfTerms)}</div>
     </div>
-  `;
-
-  if(!isHomogeneous){
-
-    showR(out,h,'error');
-
-    return;
-  }
-
-  // PARTIALS
-  const dxTerms =
-    diffTerms(terms,'x');
-
-  const dyTerms =
-    diffTerms(terms,'y');
-
-  const dzTerms =
-    is3
-      ? diffTerms(terms,'z')
-      : [];
-
-  h += `
-    <div class="step-item">
-      <div class="step-label">∂f / ∂x</div>
-
-      <div class="step-val"
-        style="font-family:'Courier New',monospace;">
-
-        ${renderTerms(dxTerms)}
-
-      </div>
-    </div>
-  `;
-
-  h += `
-    <div class="step-item">
-      <div class="step-label">∂f / ∂y</div>
-
-      <div class="step-val"
-        style="font-family:'Courier New',monospace;">
-
-        ${renderTerms(dyTerms)}
-
-      </div>
-    </div>
-  `;
-
-  if(is3){
-
-    h += `
-      <div class="step-item">
-        <div class="step-label">∂f / ∂z</div>
-
-        <div class="step-val"
-          style="font-family:'Courier New',monospace;">
-
-          ${renderTerms(dzTerms)}
-
-        </div>
-      </div>
-    `;
-  }
-
-  // EULER SUM
-  const eulerSum =
-    buildEulerSum(terms,is3);
-
-  const nfTerms =
-    terms.map(t=>({
-
-      coeff:t.coeff*n,
-
-      powers:{...t.powers}
-
-    }));
-
-  const eulerStr =
-    renderTerms(eulerSum);
-
-  const nfStr =
-    renderTerms(nfTerms);
-
-  const verified =
-    verifySymbolicMatch(
-      eulerSum,
-      nfTerms
-    );
-
-  h += `
-    <div class="step-item">
-
-      <div class="step-label">
-        Euler's Theorem
-      </div>
-
-      <div class="step-val">
-
-        <div style="
-          background:#f0fff4;
-          border:1px solid #b2dfdb;
-          border-radius:6px;
-          padding:12px;
-          margin-bottom:12px;
-        ">
-
-          <div style="
-            font-size:13px;
-            color:#7f8c8d;
-            margin-bottom:5px;
-          ">
-
-            x·(∂f/∂x)
-            + y·(∂f/∂y)
-            ${is3?'+ z·(∂f/∂z)':''}
-
-          </div>
-
-          <div style="
-            font-family:'Courier New',monospace;
-            font-size:16px;
-            color:#155724;
-            font-weight:600;
-          ">
-
-            ${eulerStr}
-
-          </div>
-        </div>
-
-        <div style="
-          background:#f0fff4;
-          border:1px solid #b2dfdb;
-          border-radius:6px;
-          padding:12px;
-        ">
-
-          <div style="
-            font-size:13px;
-            color:#7f8c8d;
-            margin-bottom:5px;
-          ">
-
-            n · f(${is3?'x,y,z':'x,y'})
-
-          </div>
-
-          <div style="
-            font-family:'Courier New',monospace;
-            font-size:16px;
-            color:#155724;
-            font-weight:600;
-          ">
-
-            ${nfStr}
-
-          </div>
-        </div>
-
-        <div style="margin-top:12px;">
-
-          <span class="${
-            verified
-              ? 'badge-ok'
-              : 'badge-fail'
-          }">
-
-            ${
-              verified
-                ? "✓ Euler's Theorem Verified Symbolically"
-                : "✗ Expressions do not match"
-            }
-
-          </span>
-
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  showR(
-    out,
-    h,
-    verified ? 'success' : 'error'
-  );
+    <div style="margin-top:12px;"><span class="${verified?'badge-ok':'badge-fail'}">${verified?"✓ Euler's Theorem Verified Symbolically":"✗ Expressions do not match"}</span></div>
+  </div></div>`;
+  showR(out,h,verified?'success':'error');
 }
-
-// ══════════════════════════════════════════════════════════
-// PARTIAL DERIVATIVES TAB
-// ══════════════════════════════════════════════════════════
-
 function runPartial(){
-
-  const expr =
-    document.getElementById('p-fn')
-    .value
-    .trim();
-
-  const out =
-    document.getElementById('partial-result');
-
-  if(!expr){
-
-    showR(
-      out,
-      '<div style="color:#e74c3c">Please enter a function.</div>',
-      'error'
-    );
-
-    return;
-  }
-
-  const is3 = simVarsP===3;
-
-  const terms =
-    parsePolynomial(expr);
-
-  if(!terms){
-
-    showR(out,`
-      <div class="step-item">
-        <div class="step-label">
-          Parse Error
-        </div>
-
-        <div class="step-val">
-          Only polynomial expressions are supported.
-        </div>
-      </div>
-    `,'error');
-
-    return;
-  }
-
-  const dxTerms =
-    diffTerms(terms,'x');
-
-  const dyTerms =
-    diffTerms(terms,'y');
-
-  const dzTerms =
-    is3
-      ? diffTerms(terms,'z')
-      : [];
-
-  let h='';
-
-  h += `
-    <div class="step-item">
-      <div class="step-label">
-        Given Function
-      </div>
-
-      <div class="step-val">
-        ${renderTerms(terms)}
-      </div>
-    </div>
-  `;
-
-  h += `
-    <div class="step-item">
-      <div class="step-label">
-        ∂f / ∂x
-      </div>
-
-      <div class="step-val">
-        ${renderTerms(dxTerms)}
-      </div>
-    </div>
-  `;
-
-  h += `
-    <div class="step-item">
-      <div class="step-label">
-        ∂f / ∂y
-      </div>
-
-      <div class="step-val">
-        ${renderTerms(dyTerms)}
-      </div>
-    </div>
-  `;
-
-  if(is3){
-
-    h += `
-      <div class="step-item">
-        <div class="step-label">
-          ∂f / ∂z
-        </div>
-
-        <div class="step-val">
-          ${renderTerms(dzTerms)}
-        </div>
-      </div>
-    `;
-  }
-
+  const expr=document.getElementById('p-fn').value.trim();
+  const out=document.getElementById('partial-result');
+  if(!expr){ showR(out,'<div style="color:#e74c3c">Please enter a function.</div>','error'); return; }
+  const is3=simVarsP===3;
+  const terms=parsePolynomial(expr);
+  if(!terms){ showR(out,'<div class="step-item"><div class="step-label">Parse Error</div><div class="step-val">Only polynomial expressions are supported.</div></div>','error'); return; }
+  let h=`<div class="step-item"><div class="step-label">Given Function</div><div class="step-val">${renderTerms(terms)}</div></div>`;
+  h+=`<div class="step-item"><div class="step-label">∂f / ∂x</div><div class="step-val">${renderTerms(diffTerms(terms,'x'))}</div></div>`;
+  h+=`<div class="step-item"><div class="step-label">∂f / ∂y</div><div class="step-val">${renderTerms(diffTerms(terms,'y'))}</div></div>`;
+  if(is3) h+=`<div class="step-item"><div class="step-label">∂f / ∂z</div><div class="step-val">${renderTerms(diffTerms(terms,'z'))}</div></div>`;
   showR(out,h,'info');
 }
 
-
-// ════════════════════════════════════════
-// FEEDBACK STAR SYSTEM
-// ════════════════════════════════════════
-
-let starRating = 0;
-
+// ═══════════════════════════════════════════════
+// FEEDBACK
+// ═══════════════════════════════════════════════
+let starRating=0;
 function initStars(){
-
-  starRating = 0;
-
+  starRating=0;
   setTimeout(()=>{
-
     document.querySelectorAll('.star').forEach(star=>{
-
-      // Hover Effect
       star.addEventListener('mouseenter',()=>{
-
-        const value = parseInt(star.dataset.v);
-
-        document.querySelectorAll('.star').forEach(s=>{
-
-          s.classList.toggle(
-            'lit',
-            parseInt(s.dataset.v) <= value
-          );
-
-        });
-
+        const v=parseInt(star.dataset.v);
+        document.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.v)<=v));
       });
-
-      // Remove Hover
       star.addEventListener('mouseleave',()=>{
-
-        document.querySelectorAll('.star').forEach(s=>{
-
-          s.classList.toggle(
-            'lit',
-            parseInt(s.dataset.v) <= starRating
-          );
-
-        });
-
+        document.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.v)<=starRating));
       });
-
-      // Click Rating
       star.addEventListener('click',()=>{
-
-        starRating = parseInt(star.dataset.v);
-
-        document.querySelectorAll('.star').forEach(s=>{
-
-          s.classList.toggle(
-            'lit',
-            parseInt(s.dataset.v) <= starRating
-          );
-
-        });
-
+        starRating=parseInt(star.dataset.v);
+        document.querySelectorAll('.star').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.v)<=starRating));
       });
-
     });
-
   },50);
 }
-
-
-// ════════════════════════════════════════
-// SUBMIT FEEDBACK
-// ════════════════════════════════════════
-
 function submitFeedback(){
-
-  // Inputs
-  const name =
-    document.getElementById('fb-name')
-    .value
-    .trim();
-
-  const roll =
-    document.getElementById('fb-roll')
-    .value
-    .trim();
-
-  const clarity =
-    document.getElementById('fb-clarity')
-    .value;
-
-  const comments =
-    document.getElementById('fb-comments')
-    .value
-    .trim();
-
-  // Validation
-  if(!name){
-
-    alert('Please enter your name.');
-
-    return;
-  }
-
-  if(starRating === 0){
-
-    alert('Please provide a rating.');
-
-    return;
-  }
-
-  // Submit Button
-  const btn =
-    document.querySelector('.fb-submit');
-
-  btn.disabled = true;
-
-  btn.innerHTML = 'Sending...';
-
-  // Star Format
-  const stars =
-    '★'.repeat(starRating) +
-    '☆'.repeat(5-starRating);
-
-  // Template Parameters
-  const templateParams = {
-
-    student_name : name,
-
-    roll_number :
-      roll || 'Not provided',
-
-    rating :
-      stars + ' (' + starRating + '/5)',
-
-    clarity :
-      clarity || 'Not selected',
-
-    comments :
-      comments || 'No comments provided',
-
-    submission_time :
-      new Date().toLocaleString()
-
+  const name=document.getElementById('fb-name').value.trim();
+  const roll=document.getElementById('fb-roll').value.trim();
+  const clarity=document.getElementById('fb-clarity').value;
+  const comments=document.getElementById('fb-comments').value.trim();
+  if(!name){ alert('Please enter your name.'); return; }
+  if(starRating===0){ alert('Please provide a rating.'); return; }
+  const btn=document.querySelector('.fb-submit');
+  btn.disabled=true; btn.innerHTML='Sending...';
+  const stars='★'.repeat(starRating)+'☆'.repeat(5-starRating);
+  const templateParams={
+    student_name:name,roll_number:roll||'Not provided',
+    rating:stars+' ('+starRating+'/5)',clarity:clarity||'Not selected',
+    comments:comments||'No comments provided',submission_time:new Date().toLocaleString()
   };
-
-  // ════════════════════════════════════
-  // SEND EMAIL
-  // ════════════════════════════════════
-
-  emailjs.send(
-
-    'service_kzmd1pt',
-
-    'template_u9ybvz6',
-
-    templateParams
-
-  )
-
+  emailjs.send('service_kzmd1pt','template_u9ybvz6',templateParams)
   .then(()=>{
-
-    // Success Message
-    document.getElementById('fb-success')
-      .style.display='block';
-
-    // Button State
-    btn.innerHTML =
-      'Feedback Submitted ✓';
-
-    // Reset Form
+    document.getElementById('fb-success').style.display='block';
+    btn.innerHTML='Feedback Submitted ✓';
     document.getElementById('fb-name').value='';
     document.getElementById('fb-roll').value='';
     document.getElementById('fb-comments').value='';
     document.getElementById('fb-clarity').selectedIndex=0;
-
-    // Reset Stars
-    starRating = 0;
-
-    document.querySelectorAll('.star')
-      .forEach(s=>s.classList.remove('lit'));
-
+    starRating=0;
+    document.querySelectorAll('.star').forEach(s=>s.classList.remove('lit'));
   })
-
-  .catch((error)=>{
-
-    console.error('EmailJS Error:', error);
-
-    alert(
-      'Failed to send feedback. Please try again.'
-    );
-
-    btn.disabled = false;
-
-    btn.innerHTML = 'Submit Feedback';
-
+  .catch(err=>{
+    console.error('EmailJS Error:',err);
+    alert('Failed to send feedback. Please try again.');
+    btn.disabled=false; btn.innerHTML='✈ Send Feedback';
   });
-
 }
 
-
-// ════════════════════════════════════════
-// INITIALIZE STARS WHEN PAGE LOADS
-// ════════════════════════════════════════
-
-window.addEventListener('load', initStars);
-
-</script>
-
-// ══════════ INIT ══════════
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
 renderHeader();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-<script>
-  emailjs.init("2jcPpkxr9Sa7ExUBy");
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("2jcPpkxr9Sa7ExUBy");</script>
 </body>
 </html>
