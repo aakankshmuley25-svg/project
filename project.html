@@ -1799,43 +1799,219 @@ function runPartial(){
   showR(out,h,'info');
 }
 
-// ══════════ FEEDBACK STARS ══════════
-let starRating=0;
+
+// ════════════════════════════════════════
+// FEEDBACK STAR SYSTEM
+// ════════════════════════════════════════
+
+let starRating = 0;
+
 function initStars(){
-  starRating=0;
+
+  starRating = 0;
+
   setTimeout(()=>{
-    document.querySelectorAll('.star').forEach(s=>{
-      s.addEventListener('mouseenter',()=>{const v=parseInt(s.dataset.v);document.querySelectorAll('.star').forEach(x=>x.classList.toggle('lit',parseInt(x.dataset.v)<=v));});
-      s.addEventListener('mouseleave',()=>{document.querySelectorAll('.star').forEach(x=>x.classList.toggle('lit',parseInt(x.dataset.v)<=starRating));});
-      s.addEventListener('click',()=>{starRating=parseInt(s.dataset.v);document.querySelectorAll('.star').forEach(x=>x.classList.toggle('lit',parseInt(x.dataset.v)<=starRating));});
+
+    document.querySelectorAll('.star').forEach(star=>{
+
+      // Hover Effect
+      star.addEventListener('mouseenter',()=>{
+
+        const value = parseInt(star.dataset.v);
+
+        document.querySelectorAll('.star').forEach(s=>{
+
+          s.classList.toggle(
+            'lit',
+            parseInt(s.dataset.v) <= value
+          );
+
+        });
+
+      });
+
+      // Remove Hover
+      star.addEventListener('mouseleave',()=>{
+
+        document.querySelectorAll('.star').forEach(s=>{
+
+          s.classList.toggle(
+            'lit',
+            parseInt(s.dataset.v) <= starRating
+          );
+
+        });
+
+      });
+
+      // Click Rating
+      star.addEventListener('click',()=>{
+
+        starRating = parseInt(star.dataset.v);
+
+        document.querySelectorAll('.star').forEach(s=>{
+
+          s.classList.toggle(
+            'lit',
+            parseInt(s.dataset.v) <= starRating
+          );
+
+        });
+
+      });
+
     });
+
   },50);
 }
 
+
+// ════════════════════════════════════════
+// SUBMIT FEEDBACK
+// ════════════════════════════════════════
+
 function submitFeedback(){
-  const name=document.getElementById('fb-name').value.trim();
-  const roll=document.getElementById('fb-roll').value.trim();
-  const clarity=document.getElementById('fb-clarity').value;
-  const comments=document.getElementById('fb-comments').value.trim();
-  const stars=starRating>0?'★'.repeat(starRating)+'☆'.repeat(5-starRating):'Not rated';
-  if(!name){alert('Please enter your name before submitting.');return;}
-  // ── Updated: only send to aakanksh ──
-  const to='aakanksh.muley25@pccoepune.org';
-  const subject=encodeURIComponent("Virtual Lab Feedback – Euler's Theorem");
-  const body=encodeURIComponent(
-    "Virtual Lab Feedback — Euler's Theorem\n==========================================\n\n"+
-    'Student Name  : '+name+'\nRoll Number   : '+(roll||'Not provided')+
-    '\nRating        : '+stars+' ('+starRating+'/5)'+
-    '\nTheory Clarity: '+(clarity||'Not selected')+
-    '\n\nComments:\n'+(comments||'(None)')+'\n\n--\nSent from Virtual Labs – PCCOE'
-  );
-  window.location.href='mailto:'+to+'?subject='+subject+'&body='+body;
-  document.getElementById('fb-success').style.display='block';
-  document.querySelector('.fb-submit').disabled=true;
+
+  // Inputs
+  const name =
+    document.getElementById('fb-name')
+    .value
+    .trim();
+
+  const roll =
+    document.getElementById('fb-roll')
+    .value
+    .trim();
+
+  const clarity =
+    document.getElementById('fb-clarity')
+    .value;
+
+  const comments =
+    document.getElementById('fb-comments')
+    .value
+    .trim();
+
+  // Validation
+  if(!name){
+
+    alert('Please enter your name.');
+
+    return;
+  }
+
+  if(starRating === 0){
+
+    alert('Please provide a rating.');
+
+    return;
+  }
+
+  // Submit Button
+  const btn =
+    document.querySelector('.fb-submit');
+
+  btn.disabled = true;
+
+  btn.innerHTML = 'Sending...';
+
+  // Star Format
+  const stars =
+    '★'.repeat(starRating) +
+    '☆'.repeat(5-starRating);
+
+  // Template Parameters
+  const templateParams = {
+
+    student_name : name,
+
+    roll_number :
+      roll || 'Not provided',
+
+    rating :
+      stars + ' (' + starRating + '/5)',
+
+    clarity :
+      clarity || 'Not selected',
+
+    comments :
+      comments || 'No comments provided',
+
+    submission_time :
+      new Date().toLocaleString()
+
+  };
+
+  // ════════════════════════════════════
+  // SEND EMAIL
+  // ════════════════════════════════════
+
+  emailjs.send(
+
+    'service_kzmd1pt',
+
+    'template_u9ybvz6',
+
+    templateParams
+
+  )
+
+  .then(()=>{
+
+    // Success Message
+    document.getElementById('fb-success')
+      .style.display='block';
+
+    // Button State
+    btn.innerHTML =
+      'Feedback Submitted ✓';
+
+    // Reset Form
+    document.getElementById('fb-name').value='';
+    document.getElementById('fb-roll').value='';
+    document.getElementById('fb-comments').value='';
+    document.getElementById('fb-clarity').selectedIndex=0;
+
+    // Reset Stars
+    starRating = 0;
+
+    document.querySelectorAll('.star')
+      .forEach(s=>s.classList.remove('lit'));
+
+  })
+
+  .catch((error)=>{
+
+    console.error('EmailJS Error:', error);
+
+    alert(
+      'Failed to send feedback. Please try again.'
+    );
+
+    btn.disabled = false;
+
+    btn.innerHTML = 'Submit Feedback';
+
+  });
+
 }
+
+
+// ════════════════════════════════════════
+// INITIALIZE STARS WHEN PAGE LOADS
+// ════════════════════════════════════════
+
+window.addEventListener('load', initStars);
+
+</script>
 
 // ══════════ INIT ══════════
 renderHeader();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+  emailjs.init("2jcPpkxr9Sa7ExUBy");
 </script>
 </body>
 </html>
